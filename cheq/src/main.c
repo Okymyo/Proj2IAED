@@ -3,7 +3,7 @@
 
 
 int main() {
-    TreeNode root;
+    TreeNode *root;
     client_tree_init(&root);
     client_tree_insert(&root, client_init(8, 2));
     client_tree_insert(&root, client_init(2, 2));

@@ -2,21 +2,21 @@
 #define C_CLIENTE_H
 
 typedef long Key;
-typedef struct client {
+typedef struct {
     long reference;
     long money;
-} *Client;
+} Client;
 
-Client client_init(long, long);
+Client *client_init(long, long);
 
-Client client_nil();
+Client *client_nil();
 
 long client_compare(Key, Key);
 
-long client_key(Client);
+long client_key(Client*);
 
-void client_print(Client);
+void client_print(Client*);
 
-void client_destroy(Client);
+void client_destroy(Client*);
 
 #endif

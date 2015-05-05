@@ -6,69 +6,69 @@
 #include "client_tree.h"
 
 /* TreeNode methods */
-TreeNode treenode_init(Client client, TreeNode left, TreeNode right) {
-    TreeNode new = (TreeNode) malloc(sizeof(struct treenode));
+TreeNode *treenode_init(Client *client, TreeNode *left, TreeNode *right) {
+    TreeNode *new = (TreeNode*) malloc(sizeof(TreeNode));
     new->client = client;
     new->left = left;
     new->right = right;
     return new;
 }
 
-void treenode_destroy(TreeNode node) {
+void treenode_destroy(TreeNode *node) {
     client_destroy(node->client);
     free(node);
 }
 
 /* Client tree methods */
-void client_tree_init(TreeNode *root) {
+void client_tree_init(TreeNode **root) {
     *root = NULL;
 }
 
-void client_tree_insert(TreeNode *leaf, Client client) {
-    if (*leaf == NULL) {
-        *leaf = treenode_init(client, NULL, NULL);
+void client_tree_insert(TreeNode **node, Client *client) {
+    if (*node == NULL) {
+        *node = treenode_init(client, NULL, NULL);
         return;
     }
-    if (client_compare(client_key(client), client_key((*leaf)->client)) < 0) {
-        client_tree_insert(&((*leaf)->left), client);
+    if (client_compare(client_key(client), client_key((*node)->client)) < 0) {
+        client_tree_insert(&((*node)->left), client);
         return;
     }
-    client_tree_insert(&((*leaf)->right), client);
+    client_tree_insert(&((*node)->right), client);
 }
 
-int client_tree_count(TreeNode *leaf) {
-    if(*leaf != NULL){
-        return 1+client_tree_count(&((*leaf)->left))+client_tree_count(&((*leaf)->right));
+int client_tree_count(TreeNode **node) {
+    if(*node != NULL){
+        return 1+client_tree_count(&((*node)->left))+client_tree_count(&((*node)->right));
     }
     return 0;
 }
 
-int client_tree_height(TreeNode *leaf) {
+int client_tree_height(TreeNode **node) {
     int heightLeft, heightRight;
-    if(*leaf != NULL){
-        heightLeft = client_tree_height(&((*leaf)->left));
-        heightRight = client_tree_height(&((*leaf)->right));
+    if(*node != NULL){
+        heightLeft = client_tree_height(&((*node)->left));
+        heightRight = client_tree_height(&((*node)->right));
         if(heightLeft > heightRight) return heightLeft+1;
         return heightRight+1;
     }
     return -1;
 }
 
-Client client_tree_search(TreeNode *leaf, Key key) {
-    if (*leaf != NULL) {
-        long comparison = client_compare(key, client_key((*leaf)->client));
+Client *client_tree_search(TreeNode **node, Key key) {
+    if (*node != NULL) {
+        long comparison = client_compare(key, client_key((*node)->client));
         if (comparison == 0) {
-            return (*leaf)->client;
+            return (*node)->client;
         }
         if (comparison < 0) {
-            return client_tree_search(&((*leaf)->left), key);
+            return client_tree_search(&((*node)->left), key);
         }
-        return client_tree_search(&((*leaf)->right), key);
+        return client_tree_search(&((*node)->right), key);
     }
     return client_nil();
 }
 
-void client_tree_print(TreeNode *leaf) {
+void client_tree_print(TreeNode **leaf) {
     if (*leaf != NULL) {
         client_tree_print(&((*leaf)->left));
         client_print((*leaf)->client);
@@ -76,7 +76,7 @@ void client_tree_print(TreeNode *leaf) {
     }
 }
 
-void client_tree_destroy(TreeNode *leaf) {
+void client_tree_destroy(TreeNode **leaf) {
     if (*leaf != NULL) {
         client_tree_destroy(&((*leaf)->left));
         client_tree_destroy(&((*leaf)->right));
