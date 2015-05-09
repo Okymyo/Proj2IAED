@@ -2,10 +2,11 @@
 #include <stdlib.h>
 #include "client.h"
 
-Client *client_init(long reference, long money) {
-    Client *new = (Client*) malloc(sizeof(Client));
+Client *client_init(long reference, long balance, long outstanding) {
+    Client *new = (Client *) malloc(sizeof(Client));
     new->reference = reference;
-    new->money = money;
+    new->balance = balance;
+    new->outstanding = outstanding;
     return new;
 }
 
@@ -13,7 +14,7 @@ Client *client_nil() {
     return NULL;
 }
 
-long client_compare(Key key, Key key1) {
+long client_compare(ClientKey key, ClientKey key1) {
     return key - key1;
 }
 
@@ -22,7 +23,7 @@ long client_key(Client *client) {
 }
 
 void client_print(Client *client) {
-    printf("[Client] -> Refererence:%li, Money:%li\n", client->reference, client->money);
+    printf("[Client] -> Refererence:%li, Balance:%li, Outstanding:%li\n", client->reference, client->balance, client->outstanding);
 }
 
 void client_destroy(Client *client) {
