@@ -1,5 +1,5 @@
-#ifndef C_CLIENTE_H
-#define C_CLIENTE_H
+#ifndef CLIENT_H
+#define CLIENT_H
 
 typedef long ClientKey;
 typedef struct {
@@ -8,16 +8,14 @@ typedef struct {
     long outstanding;
 } Client;
 
-Client *client_init(long, long, long);
+Client client_init(long, long, long);
 
 Client *client_nil();
 
 long client_compare(ClientKey, ClientKey);
 
-long client_key(Client *);
+long client_key(Client);
 
-void client_print(Client *);
-
-void client_destroy(Client *);
+void client_print(Client);
 
 #endif
