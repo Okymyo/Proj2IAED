@@ -1,9 +1,3 @@
-/*
- * Created by andre on 5/5/15.
- */
-
-#include <stdlib.h>
-#include <stdio.h>
 #include "tree.h"
 
 /* TreeNode methods */

@@ -1,7 +1,3 @@
-/*
- * Created by andre on 5/10/15.
- */
-
 #include "tree_item.h"
 
 TreeItem *tree_item_nil() {

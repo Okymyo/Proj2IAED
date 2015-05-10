@@ -1,11 +1,6 @@
-/*
- * Created by andre on 5/10/15.
- */
-
+#pragma once
+#include "includes.h"
 #include "client.h"
-
-#ifndef TREE_ITEM_H
-#define TREE_ITEM_H
 
 typedef Client TreeItem;
 typedef long TreeItemKey;
@@ -19,5 +14,3 @@ long tree_item_key(TreeItem);
 void tree_item_print(TreeItem);
 
 void tree_item_destroy(TreeItem);
-
-#endif

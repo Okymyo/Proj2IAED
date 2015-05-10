@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include "tree.h"
+#include "main.h"
 
 int main() {
     long i;

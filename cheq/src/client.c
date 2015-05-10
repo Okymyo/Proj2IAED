@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "client.h"
 
 Client client_init(long reference, long balance, long outstanding) {

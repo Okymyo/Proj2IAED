@@ -1,5 +1,5 @@
-#ifndef CLIENT_H
-#define CLIENT_H
+#pragma once
+#include "includes.h"
 
 typedef long ClientKey;
 typedef struct {
@@ -17,5 +17,3 @@ long client_compare(ClientKey, ClientKey);
 long client_key(Client);
 
 void client_print(Client);
-
-#endif

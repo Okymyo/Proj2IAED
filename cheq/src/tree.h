@@ -1,10 +1,5 @@
-/*
- * Created by andre on 5/5/15.
- */
-
-#ifndef TREE_H
-#define TREE_H
-
+#pragma once
+#include "includes.h"
 #include "tree_item.h"
 
 typedef struct treenode {
@@ -66,5 +61,3 @@ TreeItem *_tree_search(TreeNode **, TreeItemKey);
 void _tree_print(TreeNode **);
 
 void _tree_destroy(TreeNode **);
-
-#endif
