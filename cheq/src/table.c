@@ -94,9 +94,13 @@ void table_resize(Table *table, float resize){
 	}
 	
 	if (old_size > 0){
-		for (i = old_first; i != old_data[i].next; i = old_data[i].next){
+		for (i = old_first;; i = old_data[i].next){
 			printf("Attempting to insert row %u with next row being %u\n", i, old_data[i].next);
 			table_insert(table, old_data[i].item);
+			
+			/* If we just added our terminator, finish! */
+			if (i != old_data[i].next)
+				break;
 		}
 	}
 		
