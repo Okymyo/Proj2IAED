@@ -2,9 +2,9 @@
 #include "includes.h"
 #include "tree_item.h"
 
-typedef struct treenode {
+typedef struct TreeNode {
     TreeItem item;
-    struct treenode *left, *right;
+    struct TreeNode *left, *right;
 } TreeNode;
 
 typedef struct {
