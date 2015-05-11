@@ -2,10 +2,9 @@
 
 int main() {
     /*long i;
-    Tree tree;
-    tree_init(&tree);
+    Tree *tree = tree_init();
     for (i = 0; i < 1000; i++) {
-        tree_insert(&tree, client_init(i , i, i));
+        tree_insert(tree, client_init(i , i, i));
     }
     tree_print(&tree);
     printf("A nossa tree esta balanced? %s\n", (tree_balanced(&tree) ? "Sim." : "Nao!"));

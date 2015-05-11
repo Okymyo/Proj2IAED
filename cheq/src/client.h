@@ -1,19 +1,50 @@
 #pragma once
 #include "includes.h"
 
-typedef long ClientKey;
+/*
+* Client type is a structure that has three fields:
+*  -> A long, that is the reference of a client.
+*  -> Another long that is the balance of a client.
+*  -> Another long that is the outstanding of a client.
+* Size: 24 bytes.
+*/
 typedef struct {
     long reference;
     long balance;
     long outstanding;
 } Client;
 
-Client client_init(long, long, long);
+/*
+* Our ClientKey is going to be a long, the reference of the client.
+*/
+typedef long ClientKey;
 
-Client *client_nil();
+/*
+* Creates a new client.
+* @param reference   Reference of the new client.
+* @param balance     Balance of the new client.
+* @param outstanding Outstanding of the new client.
+* @return            The newly created client.
+*/
+Client client_init(long reference, long balance, long outstanding);
 
-long client_compare(ClientKey, ClientKey);
+/*
+* Compares two client keys.
+* @param clientKey1 First key of the first client that we want to compare.
+* @param clientKey2 Second key of the second client that we want to compare.
+* @return           Returns > 0, if clientKey1 is bigger than clientKey2, < 0 if clientKey1 is less than clientKey2, == 0 if both keys are the same.
+*/
+int client_compare(ClientKey clientKey1, ClientKey clientKey2);
 
-long client_key(Client);
+/*
+* Gives the key of a given client.
+* @param client Client that we want to obtain the key.
+* @return       The key of the client.
+*/
+long client_key(Client client);
 
-void client_print(Client);
+/*
+* Prints a given client.
+* @param client Client that we want to print.
+*/
+void client_print(Client client);
