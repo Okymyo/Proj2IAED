@@ -1,31 +1,39 @@
 #include "tree.h"
 
+/* ================================================================== */
 /* TreeNode methods */
-TreeNode *treenode_init(TreeItem item, TreeNode *left, TreeNode *right) {
+/* ================================================================== */
+
+TreeNode *treenode_init(TreeItem treeItem, TreeNode *leftNode, TreeNode *rightNode) {
     TreeNode *new = (TreeNode *) malloc(sizeof(TreeNode));
-    new->item = item;
-    new->left = left;
-    new->right = right;
+    new->item = treeItem;
+    new->left = leftNode;
+    new->right = rightNode;
     return new;
 }
 
-void treenode_destroy(TreeNode *node) {
-    tree_item_destroy(node->item);
-    free(node);
+void treenode_destroy(TreeNode *treeNode) {
+    tree_item_destroy(treeNode->item);
+    free(treeNode);
 }
 
-/* Tree type methods */
-void tree_init(Tree *tree) {
-    tree->root = NULL;
+/* ================================================================== */
+/* Tree methods */
+/* ================================================================== */
+
+Tree *tree_init() {
+    Tree *new = (Tree*) malloc(sizeof(Tree));
+    new->root = NULL;
+    return new;
 }
 
 int tree_empty(Tree *tree) {
     return tree->root == NULL;
 }
 
-void tree_insert(Tree *tree, TreeItem item) {
-    if (tree_search(tree, tree_item_key(item)) == tree_item_nil())
-        _tree_insert(&tree->root, item);
+void tree_insert(Tree *tree, TreeItem treeItem) {
+    if (tree_search(tree, tree_item_key(treeItem)) == NULL)
+        _tree_insert(&tree->root, treeItem);
 }
 
 int tree_count(Tree *tree) {
@@ -40,8 +48,8 @@ int tree_balanced(Tree *tree) {
     return _tree_balanced(&tree->root);
 }
 
-TreeItem *tree_search(Tree *tree, TreeItemKey key) {
-    return _tree_search(&(tree->root), key);
+TreeItem *tree_search(Tree *tree, TreeItemKey itemKey) {
+    return _tree_search(&(tree->root), itemKey);
 }
 
 void tree_print(Tree *tree) {
@@ -50,131 +58,134 @@ void tree_print(Tree *tree) {
 
 void tree_destroy(Tree *tree) {
     _tree_destroy(&tree->root);
+    free(tree);
 }
+/* ================================================================== */
+/* Tree recursive methods */
+/* ================================================================== */
 
-/* tree recursive methods */
-void _tree_insert(TreeNode **node, TreeItem item) {
-    if (*node == NULL) {
-        *node = treenode_init(item, NULL, NULL);
+void _tree_insert(TreeNode **treeNodePtr, TreeItem treeItem) {
+    if (*treeNodePtr == NULL) {
+        *treeNodePtr = treenode_init(treeItem, NULL, NULL);
         return;
     }
-    if (tree_item_compare(tree_item_key(item), tree_item_key((*node)->item)) < 0) {
-        _tree_insert(&((*node)->left), item);
+    if (tree_item_compare(tree_item_key(treeItem), tree_item_key((*treeNodePtr)->item)) < 0) {
+        _tree_insert(&((*treeNodePtr)->left), treeItem);
     } else {
-        _tree_insert(&((*node)->right), item);
+        _tree_insert(&((*treeNodePtr)->right), treeItem);
     }
-    _tree_balance(node);
+    _tree_balance(treeNodePtr);
 }
 
-int _tree_count(TreeNode **node) {
-    if (*node != NULL) {
-        return 1 + _tree_count(&((*node)->left)) + _tree_count(&((*node)->right));
+int _tree_count(TreeNode **treeNodePtr) {
+    if (*treeNodePtr != NULL) {
+        return 1 + _tree_count(&((*treeNodePtr)->left)) + _tree_count(&((*treeNodePtr)->right));
     }
     return 0;
 }
 
-int _tree_height(TreeNode **node) {
+int _tree_height(TreeNode **treeNodePtr) {
     int heightLeft, heightRight;
-    if (*node != NULL) {
-        heightLeft = _tree_height(&((*node)->left));
-        heightRight = _tree_height(&((*node)->right));
+    if (*treeNodePtr != NULL) {
+        heightLeft = _tree_height(&((*treeNodePtr)->left));
+        heightRight = _tree_height(&((*treeNodePtr)->right));
         if (heightLeft > heightRight) return heightLeft + 1;
         return heightRight + 1;
     }
     return -1;
 }
 
-int _tree_balance_factor(TreeNode **pNode) {
-    if (*pNode != NULL) {
-        return _tree_height((&(*pNode)->left)) - _tree_height((&(*pNode)->right));
+int _tree_balance_factor(TreeNode **treeNodePtr) {
+    if (*treeNodePtr != NULL) {
+        return _tree_height((&(*treeNodePtr)->left)) - _tree_height((&(*treeNodePtr)->right));
     }
     return 0;
 }
 
-void _tree_rotate_left(TreeNode **pNode) {
-    TreeNode *nodeRight = (*pNode)->right;
-    (*pNode)->right = nodeRight->left;
-    nodeRight->left = *pNode;
-    *pNode = nodeRight;
+void _tree_rotate_left(TreeNode **treeNodePtr) {
+    TreeNode *nodeRight = (*treeNodePtr)->right;
+    (*treeNodePtr)->right = nodeRight->left;
+    nodeRight->left = *treeNodePtr;
+    *treeNodePtr = nodeRight;
 }
 
-void _tree_rotate_left_right(TreeNode **pNode) {
-    if (*pNode != NULL) {
-        _tree_rotate_left(&((*pNode)->left));
-        _tree_rotate_right(pNode);
+void _tree_rotate_left_right(TreeNode **treeNodePtr) {
+    if (*treeNodePtr != NULL) {
+        _tree_rotate_left(&((*treeNodePtr)->left));
+        _tree_rotate_right(treeNodePtr);
     }
 }
 
-void _tree_rotate_right(TreeNode **pNode) {
-    TreeNode *nodeLeft = (*pNode)->left;
-    (*pNode)->left = nodeLeft->right;
-    nodeLeft->right = *pNode;
-    *pNode = nodeLeft;
+void _tree_rotate_right(TreeNode **treeNodePtr) {
+    TreeNode *nodeLeft = (*treeNodePtr)->left;
+    (*treeNodePtr)->left = nodeLeft->right;
+    nodeLeft->right = *treeNodePtr;
+    *treeNodePtr = nodeLeft;
 }
 
-void _tree_rotate_right_left(TreeNode **pNode) {
-    if (*pNode != NULL) {
-        _tree_rotate_right(&((*pNode)->right));
-        _tree_rotate_left(pNode);
+void _tree_rotate_right_left(TreeNode **treeNodePtr) {
+    if (*treeNodePtr != NULL) {
+        _tree_rotate_right(&((*treeNodePtr)->right));
+        _tree_rotate_left(treeNodePtr);
     }
 }
 
-void _tree_balance(TreeNode **pNode) {
+void _tree_balance(TreeNode **treeNodePtr) {
     int balanceFactor;
-    if (*pNode == NULL) return;
-    balanceFactor = _tree_balance_factor(pNode);
+    if (*treeNodePtr == NULL) return;
+    balanceFactor = _tree_balance_factor(treeNodePtr);
     if (balanceFactor > 1) {
-        if (_tree_balance_factor(&((*pNode)->left)) > 0) {
-            _tree_rotate_right(pNode);
+        if (_tree_balance_factor(&((*treeNodePtr)->left)) > 0) {
+            _tree_rotate_right(treeNodePtr);
         } else {
-            _tree_rotate_left_right(pNode);
+            _tree_rotate_left_right(treeNodePtr);
         }
     } else if (balanceFactor < -1) {
-        if (_tree_balance_factor(&((*pNode)->right)) < 0) {
-            _tree_rotate_left(pNode);
+        if (_tree_balance_factor(&((*treeNodePtr)->right)) < 0) {
+            _tree_rotate_left(treeNodePtr);
         } else {
-            _tree_rotate_right_left(pNode);
+            _tree_rotate_right_left(treeNodePtr);
         }
     }
 }
 
-int _tree_balanced(TreeNode **pNode) {
-    if (*pNode != NULL) {
-        int factor = _tree_balance_factor(pNode);
+int _tree_balanced(TreeNode **treeNodePtr) {
+    if (*treeNodePtr != NULL) {
+        int factor = _tree_balance_factor(treeNodePtr);
         if (factor <= 1 && factor >= -1) {
-            return _tree_balanced(&((*pNode)->left)) && _tree_balanced(&((*pNode)->right));
+            return _tree_balanced(&((*treeNodePtr)->left)) && _tree_balanced(&((*treeNodePtr)->right));
         }
         return 0;
     }
     return 1;
 }
 
-TreeItem *_tree_search(TreeNode **node, TreeItemKey key) {
-    if (*node != NULL) {
-        long comparison = tree_item_compare(key, tree_item_key((*node)->item));
+TreeItem *_tree_search(TreeNode **treeNodePtr, TreeItemKey itemKey) {
+    if (*treeNodePtr != NULL) {
+        long comparison = tree_item_compare(itemKey, tree_item_key((*treeNodePtr)->item));
         if (comparison == 0) {
-            return &(*node)->item;
+            return &(*treeNodePtr)->item;
         }
         if (comparison < 0) {
-            return _tree_search(&((*node)->left), key);
+            return _tree_search(&((*treeNodePtr)->left), itemKey);
         }
-        return _tree_search(&((*node)->right), key);
+        return _tree_search(&((*treeNodePtr)->right), itemKey);
     }
-    return tree_item_nil();
+    return NULL;
 }
 
-void _tree_print(TreeNode **leaf) {
-    if (*leaf != NULL) {
-        _tree_print(&((*leaf)->left));
-        tree_item_print((*leaf)->item);
-        _tree_print(&((*leaf)->right));
+void _tree_print(TreeNode **treeNodePtr) {
+    if (*treeNodePtr != NULL) {
+        _tree_print(&((*treeNodePtr)->left));
+        tree_item_print((*treeNodePtr)->item);
+        _tree_print(&((*treeNodePtr)->right));
     }
 }
 
-void _tree_destroy(TreeNode **leaf) {
-    if (*leaf != NULL) {
-        _tree_destroy(&((*leaf)->left));
-        _tree_destroy(&((*leaf)->right));
-        treenode_destroy(*leaf);
+void _tree_destroy(TreeNode **treeNodePtr) {
+    if (*treeNodePtr != NULL) {
+        _tree_destroy(&((*treeNodePtr)->left));
+        _tree_destroy(&((*treeNodePtr)->right));
+        treenode_destroy(*treeNodePtr);
     }
 }

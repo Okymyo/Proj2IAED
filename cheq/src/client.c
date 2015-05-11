@@ -8,12 +8,9 @@ Client client_init(long reference, long balance, long outstanding) {
     return new;
 }
 
-Client *client_nil() {
-    return NULL;
-}
-
-long client_compare(ClientKey key, ClientKey key1) {
-    return key - key1;
+int client_compare(ClientKey clientKey1, ClientKey clientKey2) {
+    /* Doing some implicit casts */
+    return (int) (clientKey1 - clientKey2);
 }
 
 long client_key(Client client) {
