@@ -14,9 +14,14 @@ int main() {
     tree_destroy(&tree);
     return 0;*/
 	
-	long long test = 23622;
-	unsigned int result = hash(test);
-	printf("%u\n", result);
-	printf("%i\n", sizeof(long long));
-	printf("%i\n", sizeof(unsigned int));
+	long i;	
+	Table *table;
+	table = table_init();
+	
+	for (i = 0; i < 5; i++) {
+        table_insert(table, cheque_init(i, i, i, i));
+    }
+	
+	table_print(table);
+	return 0;
 }
