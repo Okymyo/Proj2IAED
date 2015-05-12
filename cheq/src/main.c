@@ -48,6 +48,18 @@ int requestInput(Tree *tree) {
 }
 
 int main(int argc, const char *argv[]) {
-    while(requestInput(NULL) != QUIT);
-    return 0;
+    /*while(requestInput(NULL) != QUIT);
+    return 0;*/
+	
+	long i;
+	Table *table;
+	
+	table = table_init();
+	for (i = 0; i < 5; i++)
+		table_insert(table, cheque_init(i, i, i, i));
+		
+	table_remove(table, cheque_init(1, 1, 1, 1));
+	table_print(table);
+	table_destroy(table);
+	return 0;
 }

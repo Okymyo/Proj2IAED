@@ -7,3 +7,5 @@ typedef struct {
     long sender;
 	long receiver;
 } Cheque;
+
+Cheque cheque_init(long reference, long value, long sender, long receiver);
