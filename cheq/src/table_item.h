@@ -5,8 +5,10 @@
 typedef Cheque *TableItem;
 typedef unsigned int TableItemKey;
 
-TableItemKey table_item_key(TableItem);
+TableItemKey table_item_hash(TableItem item);
 
-void table_item_print(TableItem);
+TableItem table_item_nil();
 
-void table_item_destroy(TableItem);
+void table_item_print(TableItem item);
+
+void table_item_destroy(TableItem item);
