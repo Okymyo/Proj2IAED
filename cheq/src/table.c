@@ -64,11 +64,11 @@ void table_unqueue(Table *table){
 	table_remove(table, table_item_key(*table->data[table->first].itemPtr));
 }
 
-void table_remove(Table *table, TableItemKey item){
+void table_remove(Table *table, TableItemKey itemKey){
 	unsigned int index;
 
 	/* Find the item in the table */
-	index = table_search(table, item);
+	index = table_search(table, itemKey);
 	
 	/* If table search just returned our error value, stop */
 	if (index == table->size)
@@ -138,15 +138,15 @@ void table_print(Table *table){
 	}
 }
 
-unsigned int table_search(Table *table, TableItemKey item){
+unsigned int table_search(Table *table, TableItemKey itemKey){
 	unsigned int index, temp, collision = 0;
 		
 	/* Calculate the index for this item */
-	index = table_item_hash(item) % table->size;
+	index = table_item_hash(itemKey) % table->size;
 	
 	temp = index;
 	/* We know we have free space, and our incrementing function (i^2 + i) always succeeds */
-	while (table->data[index].itemPtr != NULL && table_item_key(*table->data[index].itemPtr) != item){
+	while (table->data[index].itemPtr != NULL && table_item_key(*table->data[index].itemPtr) != itemKey){
 		collision++;
 		index = (temp + (collision*collision + collision)/2) % table->size;
 	}

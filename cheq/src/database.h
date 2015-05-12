@@ -30,7 +30,7 @@ void database_destroy(Database *database);
 * @param  EMPTY
 * @return EMPTY
 */
-void database_cheque(Database *database, unsigned long valor, unsigned long refe, unsigned long refb, unsigned long refc);
+void database_cheque(Database *database, unsigned long value, unsigned long sender, unsigned long receiver, unsigned long reference);
 
 /*
 * EMPTY
@@ -46,7 +46,7 @@ void database_process(Database *database);
 * @param  EMPTY
 * @return EMPTY
 */
-void database_processr(Database *database, unsigned long refc);
+void database_processr(Database *database, unsigned long reference);
 
 /*
 * EMPTY
@@ -54,7 +54,7 @@ void database_processr(Database *database, unsigned long refc);
 * @param  EMPTY
 * @return EMPTY
 */
-void database_infocheque(Database *database, unsigned long ref);
+void database_infocheque(Database *database, unsigned long reference);
 
 /*
 * EMPTY
@@ -62,7 +62,7 @@ void database_infocheque(Database *database, unsigned long ref);
 * @param  EMPTY
 * @return EMPTY
 */
-void database_infoclient(Database *database, unsigned long ref);
+void database_infoclient(Database *database, unsigned long reference);
 
 /*
 * EMPTY

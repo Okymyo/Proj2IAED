@@ -13,19 +13,19 @@ void database_destroy(Database *database){
 	free(database);
 }
 
-void database_cheque(Database *database, unsigned long valor, unsigned long refe, unsigned long refb, unsigned long refc){
+void database_cheque(Database *database, unsigned long value, unsigned long sender, unsigned long receiver, unsigned long reference){
 }
 
 void database_process(Database *database){
 }
 
-void database_processr(Database *database, unsigned long refc){
+void database_processr(Database *database, unsigned long reference){
 }
 
-void database_infocheque(Database *database, unsigned long ref){
+void database_infocheque(Database *database, unsigned long reference){
 }
 
-void database_infoclient(Database *database, unsigned long ref){
+void database_infoclient(Database *database, unsigned long reference){
 }
 
 void database_info(Database *database){
