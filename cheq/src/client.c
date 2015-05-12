@@ -1,6 +1,6 @@
 #include "client.h"
 
-Client client_init(long reference, long balance, long outstanding) {
+Client client_init(unsigned long reference, unsigned long balance, unsigned long outstanding) {
     Client new;
     new.reference = reference;
     new.balance = balance;
@@ -9,11 +9,12 @@ Client client_init(long reference, long balance, long outstanding) {
 }
 
 int client_compare(ClientKey clientKey1, ClientKey clientKey2) {
-    /* Doing some implicit casts */
-    return (int) (clientKey1 - clientKey2);
+    if(clientKey1 > clientKey2) return 1;
+    if(clientKey1 < clientKey2) return -1;
+    return 0;
 }
 
-long client_key(Client client) {
+unsigned long client_key(Client client) {
     return client.reference;
 }
 

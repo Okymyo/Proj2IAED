@@ -9,15 +9,15 @@
 * Size: 24 bytes.
 */
 typedef struct {
-    long reference;
-    long balance;
-    long outstanding;
+    unsigned long reference;
+    unsigned long balance;
+    unsigned long outstanding;
 } Client;
 
 /*
 * Our ClientKey is going to be a long, the reference of the client.
 */
-typedef long ClientKey;
+typedef unsigned long ClientKey;
 
 /*
 * Creates a new client.
@@ -26,7 +26,7 @@ typedef long ClientKey;
 * @param outstanding Outstanding of the new client.
 * @return            The newly created client.
 */
-Client client_init(long reference, long balance, long outstanding);
+Client client_init(unsigned long reference, unsigned long balance, unsigned long outstanding);
 
 /*
 * Compares two client keys.
@@ -41,7 +41,7 @@ int client_compare(ClientKey clientKey1, ClientKey clientKey2);
 * @param client Client that we want to obtain the key.
 * @return       The key of the client.
 */
-long client_key(Client client);
+unsigned long client_key(Client client);
 
 /*
 * Prints a given client.
