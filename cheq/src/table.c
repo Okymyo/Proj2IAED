@@ -147,7 +147,7 @@ void table_print(Table *table){
 	printf("First row:%u\n", table->first);
 	for (i = 0; i < table->size; i++){
 		if (table->data[i].itemPtr != table_item_nil())
-			printf("Row:%u     DATA[!]:%u      Pointer:%p     Next:%u     Prev:%u\n", i, table->data[i].itemPtr->reference, (void*)table->data[i].itemPtr, table->data[i].next, table->data[i].prev);
+			table_item_print(*table->data[i].itemPtr);
 	}
 }
 
