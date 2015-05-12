@@ -6,7 +6,7 @@
 *  -> A long, that is the reference of a client.
 *  -> Another long that is the balance of a client.
 *  -> Another long that is the outstanding of a client.
-* Size: 24 bytes.
+* Size: 24 bytes [for implementations where size of long is 8].
 */
 typedef struct {
     unsigned long reference;

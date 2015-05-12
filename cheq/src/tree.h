@@ -61,11 +61,18 @@ Tree *tree_init();
 int tree_empty(Tree *tree);
 
 /*
-* Inserts a new item into a given tree. Not used, may be deleted.
+* Inserts a new item into a given tree.
 * @param tree     Pointer to the tree to insert item into.
 * @param treeItem Item to insert into the tree.
 */
 void tree_insert(Tree *tree, TreeItem treeItem);
+
+/*
+* Removes item with specified key from a given tree.
+* @param tree    Pointer to the tree to remove the item from.
+* @param itemKey Key of the item we want to remove.
+*/
+void tree_remove(Tree *tree, TreeItemKey itemKey);
 
 /*
 * Counts the number of elements of a given tree.
