@@ -5,11 +5,19 @@
 #define EXPAND 2			/* If we're expanding, we duplicate the size. MUST remain power of two! */
 #define SHRINK 0.5			/* If we're shrinking, halve the size. MUST remain power of two! */
 
-TableRow table_row_init(TableItem item, TableItemKey next, TableItemKey previous){
+TableRow table_row_init(TableItem *item, TableItemKey next, TableItemKey previous){
 	TableRow row;
 	row.item = item;
 	row.next = next;
 	row.prev = previous;
+	return row;
+}
+
+TableRow table_row_nil(){
+	TableRow row;
+	row.item = table_item_nil();
+	row.next = 0;
+	row.prev = 0;
 	return row;
 }
 
@@ -22,7 +30,7 @@ Table *table_init(){
 	return table;
 }
 
-void table_insert(Table *table, TableItem item){
+void table_insert(Table *table, TableItem *item){
 	TableItemKey key, temp, collision = 0;
 	TableRow row;
 
@@ -32,12 +40,6 @@ void table_insert(Table *table, TableItem item){
 	/* Calculate the key for this item */
 	key = table_item_hash(item) % table->size;
 	
-	/* Initialize a row with TableItem item, and with the previously last element */
-	if (table->count > 0)
-		row = table_row_init(item, key, table->data[table->first].prev);
-	else
-		row = table_row_init(item, key, key);
-	
 	temp = key;
 	
 	/* We know we have free space, and our incrementing function (i^2 + i) always succeeds */
@@ -45,6 +47,12 @@ void table_insert(Table *table, TableItem item){
 		collision++;
 		key = (temp + (collision*collision + collision)/2) % table->size;
 	}
+	
+	/* Initialize a row with TableItem item, and with the previously last element */
+	if (table->count > 0)
+		row = table_row_init(item, key, table->data[table->first].prev);
+	else
+		row = table_row_init(item, key, key);
 	
 	table->data[key] = row;
 	if (table->count > 0){
@@ -58,14 +66,28 @@ void table_insert(Table *table, TableItem item){
 	table->count++;
 }
 
-void table_remove(Table *table, TableItem item){
+void table_remove(Table *table, TableItem *item){
 	TableItemKey key;
 
-	/* Calculate the key for this item */
-	key = table_item_hash(item) % table->size;
+	/* Find the item in the table */
+	key = table_search(table, item);
 	
-	table->data[table->data[key].prev].next = table->data[key].next;
-	table->data[table->data[key].next].prev = table->data[key].prev;
+	printf("Removing row %u\n", key);
+	
+	/* If the record we just deleted was the first in queue, update what the first in queue is
+	Also update the new first in queue so that its "prev" is the last element. */
+	if (table->first == key){
+		table->first = table->data[key].next;
+		table->data[table->data[key].next].prev = table->data[key].prev;
+	}
+	/* If the record we deleted wasn't the first one, update the previous and next records
+	so that they point to eachother with "next" and "prev" respectively. */
+	else{
+		table->data[table->data[key].prev].next = table->data[key].next;
+		table->data[table->data[key].next].prev = table->data[key].prev;
+	}
+		
+	table->data[key].item = table_item_nil();
 
 	if (table->count <= table->size*SHRINKTHRESHOLD)
 		table_resize(table, SHRINK);
@@ -75,7 +97,6 @@ void table_resize(Table *table, float resize){
 	TableItemKey old_size, old_first, i;
 	TableRow *old_data;
 	
-	printf("I liek expansionz, size is %u\n", table->size);
 	old_size = table->size;
 	old_first = table->first;
 	old_data = table->data;
@@ -89,17 +110,15 @@ void table_resize(Table *table, float resize){
 	
 	table->count = 0;
 	
-	for (i = 0; i < table->first; i++){
+	for (i = 0; i < table->size; i++){
 		table->data[i].item = table_item_nil();
 	}
 	
 	if (old_size > 0){
 		for (i = old_first;; i = old_data[i].next){
-			printf("Attempting to insert row %u with next row being %u\n", i, old_data[i].next);
-			table_insert(table, old_data[i].item);
-			
+			table_insert(table, old_data[i].item);			
 			/* If we just added our terminator, finish! */
-			if (i != old_data[i].next)
+			if (i == old_data[i].next)
 				break;
 		}
 	}
@@ -108,7 +127,7 @@ void table_resize(Table *table, float resize){
 }
 
 void table_print(Table *table){
-	int i;
+	TableItemKey i;
 	printf("First row:%u\n", table->first);
 	for (i = 0; i < table->size; i++){
 		if (table->data[i].item != table_item_nil())
@@ -116,7 +135,7 @@ void table_print(Table *table){
 	}
 }
 
-TableItemKey table_search(Table *table, TableItem item){
+TableItemKey table_search(Table *table, TableItem *item){
 	TableItemKey key, temp, collision = 0;
 		
 	/* Calculate the key for this item */
@@ -124,7 +143,7 @@ TableItemKey table_search(Table *table, TableItem item){
 	
 	temp = key;
 	/* We know we have free space, and our incrementing function (i^2 + i) always succeeds */
-	while (table->data[key].item != table_item_nil() && table->data[key].item != item){
+	while (!table_item_equal(table->data[key].item, item)){
 		collision++;
 		key = (temp + (collision*collision + collision)/2) % table->size;
 	}
@@ -134,4 +153,14 @@ TableItemKey table_search(Table *table, TableItem item){
 		return table->size;
 	
 	return key;
+}
+
+void table_destroy(Table *table){
+	TableItemKey i;
+	for (i = 0; i < table->size; i++){
+		if (table->data[i].item != table_item_nil())
+			table_item_destroy(table->data[i].item);
+	}
+	free(table->data);
+	free(table);
 }

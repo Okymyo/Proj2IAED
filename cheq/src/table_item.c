@@ -2,7 +2,7 @@
 
 #define MAGICCONSTANT 0x45d9f3b
 
-TableItemKey table_item_hash(TableItem item){
+TableItemKey table_item_hash(TableItem *item){
 	TableItemKey hash;
 	
 	/* Explicit data-loss if item.reference > 2^31 - 1
@@ -17,6 +17,17 @@ TableItemKey table_item_hash(TableItem item){
 	return hash;
 }
 
-TableItem table_item_nil(){
+TableItem *table_item_nil(){
 	return NULL;
+}
+
+void table_item_destroy(TableItem *item){
+	free(item);
+}
+
+int table_item_equal(TableItem *item1, TableItem *item2){
+	if (item1 == table_item_nil() || item1 == table_item_nil())
+		return 0;
+	else
+		return item1->reference == item2->reference;
 }

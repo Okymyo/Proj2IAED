@@ -20,7 +20,8 @@ int main() {
 	for (i = 0; i < 5; i++) {
         table_insert(table, cheque_init(i, i, i, i));
     }
-	
+	table_remove(table, cheque_init(3, 3, 3, 3));
 	table_print(table);
+	table_destroy(table);
 	return 0;
 }
