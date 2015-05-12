@@ -1,6 +1,5 @@
 #pragma once
 #include "includes.h"
-#include "tree.h"
-#include "table.h"
+#include "database.h"
 
-int requestInput(Tree *tree, Table *table);
+int requestInput(Database *database);

@@ -13,21 +13,8 @@ TableRow table_row_init(TableItem *itemPtr, unsigned int next, unsigned int prev
 	return row;
 }
 
-TableRow table_row_nil(){
-	TableRow row;
-	row.itemPtr = table_item_nil();
-	row.next = 0;
-	row.prev = 0;
-	return row;
-}
-
 Table *table_init(){
-	Table *table = malloc(sizeof(Table));
-	table->first = 0;
-	table->count = 0;
-	table->size = 0;
-	table->data = NULL;
-	return table;
+	return (Table*)calloc(1, sizeof(Table));
 }
 
 void table_insert(Table *table, TableItem item){

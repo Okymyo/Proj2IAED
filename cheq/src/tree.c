@@ -22,9 +22,7 @@ void treenode_destroy(TreeNode *treeNode) {
 /* ================================================================== */
 
 Tree *tree_init() {
-    Tree *new = (Tree*) malloc(sizeof(Tree));
-    new->root = NULL;
-    return new;
+    return (Tree*)calloc(1, sizeof(Tree));
 }
 
 int tree_empty(Tree *tree) {
@@ -34,6 +32,9 @@ int tree_empty(Tree *tree) {
 void tree_insert(Tree *tree, TreeItem treeItem) {
     if (tree_search(tree, tree_item_key(treeItem)) == NULL)
         _tree_insert(&tree->root, treeItem);
+}
+
+void tree_remove(Tree *tree, TreeItemKey itemKey){
 }
 
 int tree_count(Tree *tree) {

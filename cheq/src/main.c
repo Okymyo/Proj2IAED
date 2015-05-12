@@ -35,7 +35,7 @@ void parseArguments(int *argc, char argv[ARGUMENTS_NUMBER][ARGUMENT_SIZE]) {
 }
 
 /* We have to give tree and table here */
-int requestInput(Tree *tree, Table *table) {
+int requestInput(Database *database) {
     int argc = 0;
     char argv[ARGUMENTS_NUMBER][ARGUMENT_SIZE];
     parseArguments(&argc, argv);
@@ -46,38 +46,39 @@ int requestInput(Tree *tree, Table *table) {
 		sscanf(argv[2], "%lu", &refe);
 		sscanf(argv[3], "%lu", &refb);
 		sscanf(argv[4], "%lu", &refc);
-		table_insert(table, cheque_init(refc, valor, refe, refb));
+		database_cheque(database, valor, refe, refb, refc);
     }
 	else if(strcmp(argv[0], "processa") == 0){
-		table_unqueue(table);
+		database_process(database);
     }
 	else if(strcmp(argv[0], "processaR") == 0){
 		unsigned long refc = 0;
 		sscanf(argv[1], "%lu", &refc);
-		table_remove(table, refc);
+		database_processr(database, refc);
     }
 	else if(strcmp(argv[0], "infocheque") == 0){
-		
+		unsigned long ref = 0;
+		sscanf(argv[1], "%lu", &ref);
+		database_infocheque(database, ref);
     }
 	else if(strcmp(argv[0], "infocliente") == 0){
-
+		unsigned long ref = 0;
+		sscanf(argv[1], "%lu", &ref);
+		database_infoclient(database, ref);
     }
 	else if(strcmp(argv[0], "info") == 0){
-
+		database_info(database);
     }
 	else if(strcmp(argv[0], "sair") == 0){
-		table_print(table);
-		tree_print(tree);
+		database_quit(database);
         return QUIT;
     }
     return CONTINUE;
 }
 
 int main(int argc, const char *argv[]) {
-	Tree *tree = tree_init();
-	Table *table = table_init();
-    while(requestInput(tree, table) != QUIT);
-	tree_destroy(tree);
-	table_destroy(table);
+	Database *database = database_init();
+    while(requestInput(database) != QUIT);
+	database_destroy(database);
     return 0;
 }
