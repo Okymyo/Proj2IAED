@@ -4,8 +4,9 @@
 
 typedef Cheque TableItem;
 typedef unsigned int TableItemKey;
+typedef long TableSearchItem;
 
-TableItemKey table_item_hash(TableItem item);
+TableItemKey table_item_hash(TableSearchItem item);
 
 TableItem *table_item_nil();
 
@@ -13,4 +14,4 @@ void table_item_print(TableItem *item);
 
 void table_item_destroy(TableItem *item);
 
-int table_item_equal(TableItem item1, TableItem item2);
+TableSearchItem table_search_item(TableItem item);

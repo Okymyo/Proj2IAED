@@ -23,6 +23,10 @@ TableRow table_row_init(TableItem *itemPtr, TableItemKey next, TableItemKey prev
 
 void table_print(Table *table);
 
-TableItemKey table_search(Table *table, TableItem item);
+TableItemKey table_search(Table *table, TableSearchItem item);
 
 void table_destroy(Table *table);
+
+void table_unqueue(Table *table);
+
+void table_remove(Table *table, TableSearchItem item);

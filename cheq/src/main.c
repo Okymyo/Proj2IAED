@@ -57,8 +57,13 @@ int main(int argc, const char *argv[]) {
 	table = table_init();
 	for (i = 0; i < 5; i++)
 		table_insert(table, cheque_init(i, i, i, i));
-		
-	table_remove(table, cheque_init(1, 1, 1, 1));
+	
+	table_print(table);
+	table_remove(table, 3);
+	table_print(table);
+	table_unqueue(table);
+	table_print(table);
+	table_remove(table, 1);
 	table_print(table);
 	table_destroy(table);
 	return 0;

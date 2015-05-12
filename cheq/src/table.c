@@ -45,7 +45,7 @@ void table_insert_pointer(Table *table, TableItem *itemPtr){
 		table_resize(table, EXPAND);
 		
 	/* Calculate the key for this item */
-	key = table_item_hash(*itemPtr) % table->size;
+	key = table_item_hash(table_search_item(*itemPtr)) % table->size;
 	
 	temp = key;
 	
@@ -73,13 +73,19 @@ void table_insert_pointer(Table *table, TableItem *itemPtr){
 	table->count++;
 }
 
-void table_remove(Table *table, TableItem item){
+void table_unqueue(Table *table){
+	table_remove(table, table_search_item(*table->data[table->first].itemPtr));
+}
+
+void table_remove(Table *table, TableSearchItem item){
 	TableItemKey key;
 
 	/* Find the item in the table */
 	key = table_search(table, item);
 	
-	printf("Removing row %u\n", key);
+	/* If table search just returned our error value, stop */
+	if (key == table->size)
+		return;
 	
 	/* If the record we just deleted was the first in queue, update what the first in queue is
 	Also update the new first in queue so that its "prev" is the last element. */
@@ -97,6 +103,7 @@ void table_remove(Table *table, TableItem item){
 	table_item_destroy(table->data[key].itemPtr);
 	free(table->data[key].itemPtr);
 	table->data[key].itemPtr = table_item_nil();
+	table->count--;
 
 	if (table->count <= table->size*SHRINKTHRESHOLD)
 		table_resize(table, SHRINK);
@@ -144,7 +151,7 @@ void table_print(Table *table){
 	}
 }
 
-TableItemKey table_search(Table *table, TableItem item){
+TableItemKey table_search(Table *table, TableSearchItem item){
 	TableItemKey key, temp, collision = 0;
 		
 	/* Calculate the key for this item */
@@ -152,7 +159,7 @@ TableItemKey table_search(Table *table, TableItem item){
 	
 	temp = key;
 	/* We know we have free space, and our incrementing function (i^2 + i) always succeeds */
-	while (!table_item_equal(*table->data[key].itemPtr, item)){
+	while (table->data[key].itemPtr != NULL && table_search_item(*table->data[key].itemPtr) != item){
 		collision++;
 		key = (temp + (collision*collision + collision)/2) % table->size;
 	}

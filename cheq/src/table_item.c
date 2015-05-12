@@ -2,12 +2,12 @@
 
 #define MAGICCONSTANT 0x45d9f3b
 
-TableItemKey table_item_hash(TableItem item){
+TableItemKey table_item_hash(TableSearchItem item){
 	TableItemKey hash;
 	
 	/* Explicit data-loss if item.reference > 2^32
 	This is acceptable because this is a hash, we just need a good hash */
-	hash = (TableItemKey)item.reference;
+	hash = (TableItemKey)item;
 	
 	/* Shift right by 16 bits, to the power of itself (prior to shift), and multiply by the magic constant. 
 	Repeat this step three times, but on the third don't multiply by the magic constant. */
@@ -24,6 +24,6 @@ TableItem *table_item_nil(){
 void table_item_destroy(TableItem *itemPtr){
 }
 
-int table_item_equal(TableItem item1, TableItem item2){
-	return item1.reference == item2.reference;
+TableSearchItem table_search_item(TableItem item){
+	return item.reference;
 }
