@@ -4,12 +4,12 @@
 
 typedef struct {
     TableItem *itemPtr;
-    TableItemKey prev, next;
+    unsigned int prev, next;
 } TableRow;
 
 typedef struct {
-    TableItemKey first;
-	TableItemKey count, size;
+    unsigned int first;
+	unsigned int count, size;
 	TableRow *data;
 } Table;
 
@@ -19,14 +19,14 @@ void table_insert_pointer(Table *table, TableItem *itemPtr);
 
 void table_resize(Table *table, float resize);
 
-TableRow table_row_init(TableItem *itemPtr, TableItemKey next, TableItemKey previous);
+TableRow table_row_init(TableItem *itemPtr, unsigned int next, unsigned int previous);
 
 void table_print(Table *table);
 
-TableItemKey table_search(Table *table, TableSearchItem item);
+unsigned int table_search(Table *table, TableItemKey item);
 
 void table_destroy(Table *table);
 
 void table_unqueue(Table *table);
 
-void table_remove(Table *table, TableSearchItem item);
+void table_remove(Table *table, TableItemKey item);

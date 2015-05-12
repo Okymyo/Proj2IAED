@@ -5,7 +5,7 @@
 #define EXPAND 2			/* If we're expanding, we duplicate the size. MUST remain power of two! */
 #define SHRINK 0.5			/* If we're shrinking, halve the size. MUST remain power of two! */
 
-TableRow table_row_init(TableItem *itemPtr, TableItemKey next, TableItemKey previous){
+TableRow table_row_init(TableItem *itemPtr, unsigned int next, unsigned int previous){
 	TableRow row;
 	row.itemPtr = itemPtr;
 	row.next = next;
@@ -37,72 +37,72 @@ void table_insert(Table *table, TableItem item){
 }
 
 void table_insert_pointer(Table *table, TableItem *itemPtr){
-	TableItemKey key, temp, collision = 0;
+	unsigned int index, temp, collision = 0;
 	TableRow row;
 
 	/* If our table is too full, expand it */
 	if (table->count >= table->size*EXPANDTHRESHOLD)
 		table_resize(table, EXPAND);
 		
-	/* Calculate the key for this item */
-	key = table_item_hash(table_search_item(*itemPtr)) % table->size;
+	/* Calculate the index for this item */
+	index = table_item_hash(table_item_key(*itemPtr)) % table->size;
 	
-	temp = key;
+	temp = index;
 	
 	/* We know we have free space, and our incrementing function (i^2 + i) always succeeds */
-	while (table->data[key].itemPtr != table_item_nil()){
+	while (table->data[index].itemPtr != table_item_nil()){
 		collision++;
-		key = (temp + (collision*collision + collision)/2) % table->size;
+		index = (temp + (collision*collision + collision)/2) % table->size;
 	}
 	
 	/* Initialize a row with TableItem item, and with the previously last element */
 	if (table->count > 0)
-		row = table_row_init(itemPtr, key, table->data[table->first].prev);
+		row = table_row_init(itemPtr, index, table->data[table->first].prev);
 	else
-		row = table_row_init(itemPtr, key, key);
+		row = table_row_init(itemPtr, index, index);
 	
-	table->data[key] = row;
+	table->data[index] = row;
 	if (table->count > 0){
-		table->data[table->data[table->first].prev].next = key;
-		table->data[table->first].prev = key;
+		table->data[table->data[table->first].prev].next = index;
+		table->data[table->first].prev = index;
 	}
 	else{
-		table->first = key;
+		table->first = index;
 	}
 	
 	table->count++;
 }
 
 void table_unqueue(Table *table){
-	table_remove(table, table_search_item(*table->data[table->first].itemPtr));
+	table_remove(table, table_item_key(*table->data[table->first].itemPtr));
 }
 
-void table_remove(Table *table, TableSearchItem item){
-	TableItemKey key;
+void table_remove(Table *table, TableItemKey item){
+	unsigned int index;
 
 	/* Find the item in the table */
-	key = table_search(table, item);
+	index = table_search(table, item);
 	
 	/* If table search just returned our error value, stop */
-	if (key == table->size)
+	if (index == table->size)
 		return;
 	
 	/* If the record we just deleted was the first in queue, update what the first in queue is
 	Also update the new first in queue so that its "prev" is the last element. */
-	if (table->first == key){
-		table->first = table->data[key].next;
-		table->data[table->data[key].next].prev = table->data[key].prev;
+	if (table->first == index){
+		table->first = table->data[index].next;
+		table->data[table->data[index].next].prev = table->data[index].prev;
 	}
 	/* If the record we deleted wasn't the first one, update the previous and next records
 	so that they point to eachother with "next" and "prev" respectively. */
 	else{
-		table->data[table->data[key].prev].next = table->data[key].next;
-		table->data[table->data[key].next].prev = table->data[key].prev;
+		table->data[table->data[index].prev].next = table->data[index].next;
+		table->data[table->data[index].next].prev = table->data[index].prev;
 	}
 		
-	table_item_destroy(table->data[key].itemPtr);
-	free(table->data[key].itemPtr);
-	table->data[key].itemPtr = table_item_nil();
+	table_item_destroy(table->data[index].itemPtr);
+	free(table->data[index].itemPtr);
+	table->data[index].itemPtr = table_item_nil();
 	table->count--;
 
 	if (table->count <= table->size*SHRINKTHRESHOLD)
@@ -110,7 +110,7 @@ void table_remove(Table *table, TableSearchItem item){
 }
 
 void table_resize(Table *table, float resize){
-	TableItemKey old_size, old_first, i;
+	unsigned int old_size, old_first, i;
 	TableRow *old_data;
 	
 	old_size = table->size;
@@ -118,7 +118,7 @@ void table_resize(Table *table, float resize){
 	old_data = table->data;
 	
 	if (old_size > 0)
-		table->size = (TableItemKey)(old_size*resize);
+		table->size = (unsigned int)(old_size*resize);
 	else
 		table->size = 2;
 		
@@ -143,7 +143,7 @@ void table_resize(Table *table, float resize){
 }
 
 void table_print(Table *table){
-	TableItemKey i;
+	unsigned int i;
 	printf("First row:%u\n", table->first);
 	for (i = 0; i < table->size; i++){
 		if (table->data[i].itemPtr != table_item_nil())
@@ -151,28 +151,28 @@ void table_print(Table *table){
 	}
 }
 
-TableItemKey table_search(Table *table, TableSearchItem item){
-	TableItemKey key, temp, collision = 0;
+unsigned int table_search(Table *table, TableItemKey item){
+	unsigned int index, temp, collision = 0;
 		
-	/* Calculate the key for this item */
-	key = table_item_hash(item) % table->size;
+	/* Calculate the index for this item */
+	index = table_item_hash(item) % table->size;
 	
-	temp = key;
+	temp = index;
 	/* We know we have free space, and our incrementing function (i^2 + i) always succeeds */
-	while (table->data[key].itemPtr != NULL && table_search_item(*table->data[key].itemPtr) != item){
+	while (table->data[index].itemPtr != NULL && table_item_key(*table->data[index].itemPtr) != item){
 		collision++;
-		key = (temp + (collision*collision + collision)/2) % table->size;
+		index = (temp + (collision*collision + collision)/2) % table->size;
 	}
 	
 	/* This should never happen. So, if it does, we return an impossible value (will Segmentation Fault if unhandled!) */
-	if (table->data[key].itemPtr == NULL)
+	if (table->data[index].itemPtr == NULL)
 		return table->size;
 	
-	return key;
+	return index;
 }
 
 void table_destroy(Table *table){
-	TableItemKey i;
+	unsigned int i;
 	for (i = 0; i < table->size; i++){
 		if (table->data[i].itemPtr != table_item_nil()){
 			table_item_destroy(table->data[i].itemPtr);
