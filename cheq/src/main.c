@@ -9,7 +9,7 @@ void parseArguments(int *argc, char argv[ARGUMENTS_NUMBER][ARGUMENT_SIZE]) {
     int wordPosition = 0;
 
     fgets(line, LINESIZE, stdin);
-    for(linePosition = 0; (charRead = line[linePosition]) != '\n' && *argc < ARGUMENTS_NUMBER; linePosition++){
+    for(charRead = line[linePosition = 0]; charRead != '\n' && charRead != EOF && charRead != '\0' && *argc < ARGUMENTS_NUMBER; charRead = line[++linePosition]){
         if(!insideWord && charRead != ' '){
             insideWord = 1;
             wordPosition = 0;
@@ -29,7 +29,6 @@ void parseArguments(int *argc, char argv[ARGUMENTS_NUMBER][ARGUMENT_SIZE]) {
 
 /* We have to give tree and table here */
 int requestInput(Database *database) {
-	printf("INPUT PLZ! : ");
     int argc = 0;
     char argv[ARGUMENTS_NUMBER][ARGUMENT_SIZE];
     parseArguments(&argc, argv);
@@ -66,6 +65,9 @@ int requestInput(Database *database) {
 	else if(strcmp(argv[0], "sair") == 0){
 		database_quit(database);
         return QUIT;
+    }
+	else if(strcmp(argv[0], "print") == 0){
+		table_print(database->table);
     }
     return CONTINUE;
 }

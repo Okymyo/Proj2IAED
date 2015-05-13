@@ -87,9 +87,15 @@ TableItem table_remove(Table *table, TableItemKey itemKey){
 		table->first = table->data[index].next;
 		table->data[table->data[index].next].prev = table->data[index].prev;
 	}
-	/* If the record we deleted wasn't the first one, update the previous and next records
-	so that they point to eachother with "next" and "prev" respectively. */
-	else{
+	/* If the record we just deleted was the last in queue, update the new last in queue so that
+	its next is itself, and the first so that its previous is the new last */
+	else if (table->data[table->first].prev == index) {
+		table->data[table->data[index].prev].next = table->data[index].prev;
+		table->data[table->first].prev = table->data[index].prev;
+	}
+	/* If the record we deleted wasn't the first one, and not the last one, update the previous
+	and next records so that they point to eachother with "next" and "prev" respectively. */
+	else {
 		table->data[table->data[index].prev].next = table->data[index].next;
 		table->data[table->data[index].next].prev = table->data[index].prev;
 	}
@@ -99,13 +105,13 @@ TableItem table_remove(Table *table, TableItemKey itemKey){
 	free(table->data[index].itemPtr);
 	table->data[index].itemPtr = NULL;
 	
+	/* Decrement our counter BEFORE doing the resize.
+	If we don't, we'll report incorrect sizes to table_resize */
+	table->count--;
+	
 	/* If our table is too large, shrink it */
 	if (table->count <= table->size*SHRINKTHRESHOLD)
 		table_resize(table, SHRINK);
-		
-	/* Decrement our counter AFTER doing everything else.
-	If we don't, we'll report incorrect sizes (especially to table_resize) */
-	table->count--;
 		
 	return destroy;
 }
@@ -120,20 +126,20 @@ void table_resize(Table *table, float resize){
 	
 	if (old_size >= 2 && resize == EXPAND)
 		table->size = (unsigned int)(old_size*resize);
-	else if (old_size <= 2 && resize == SHRINK)
+	else if (table->count == 0 && resize == SHRINK)
 		table->size = 0;
 	else
 		table->size = 2;
 		
 	table->data = malloc(sizeof(TableRow)*table->size);
 	
-	table->count = 0;
-	
 	for (i = 0; i < table->size; i++){
 		table->data[i].itemPtr = NULL;
 	}
 	
 	if (old_size > 0 && table->size > 0){
+		/* Reset our table count, which will be set correctly when re-adding elements */
+		table->count = 0;
 		for (i = old_first;; i = old_data[i].next){
 			table_insert_pointer(table, old_data[i].itemPtr);			
 			/* If we just added our terminator, finish! */
@@ -152,10 +158,11 @@ unsigned int table_count(Table *table){
 /* DELETE!!!! */
 void table_print(Table *table){
 	unsigned int i;
-	printf("First row:%u\n", table->first);
+	printf("First row:%u  Count:%u\n", table->first, table->count);
 	for (i = 0; i < table->size; i++){
-		if (table->data[i].itemPtr != NULL)
-			table_item_print(*table->data[i].itemPtr);
+		if (table->data[i].itemPtr != NULL){
+			printf("Row:%3u  Next:%3u  Previous:%3u\n", i, table->data[i].next, table->data[i].prev);
+		}
 	}
 }
 
@@ -180,13 +187,13 @@ unsigned int table_search_row(Table *table, TableItemKey itemKey){
 	
 	temp = index;
 	/* We know we have free space, and our incrementing function (i^2 + i) always succeeds */
-	while (table->data[index].itemPtr != NULL && table_item_key(*table->data[index].itemPtr) != itemKey){
+	while (collision < table->size && (table->data[index].itemPtr == NULL || table_item_key(*table->data[index].itemPtr) != itemKey)){
 		collision++;
 		index = (temp + (collision*collision + collision)/2) % table->size;
 	}
 	
-	/* This should never happen. So, if it does, we return an impossible value (will Segmentation Fault if unhandled!) */
-	if (table->data[index].itemPtr == NULL)
+	/* If we stopped searching because we went through every possible position, return our "nothing found" value */
+	if (collision >= table->size)
 		return table->size;
 	
 	return index;
