@@ -7,7 +7,7 @@ typedef unsigned long TableItemKey;
 
 /*
 * EMPTY
-* @param  itemKey
+* @param  EMPTY
 * @param  EMPTY
 * @return EMPTY
 */

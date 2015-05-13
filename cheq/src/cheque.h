@@ -23,3 +23,43 @@ typedef struct {
 * @return EMPTY
 */
 Cheque cheque_init(long reference, long value, long sender, long receiver);
+
+/*
+* EMPTY
+* @param  EMPTY
+* @param  EMPTY
+* @return EMPTY
+*/
+unsigned long cheque_reference(Cheque *cheque){
+	return cheque->reference;
+}
+
+/*
+* EMPTY
+* @param  EMPTY
+* @param  EMPTY
+* @return EMPTY
+*/
+unsigned long cheque_value(Cheque *cheque){
+	return cheque->value;
+}
+
+/*
+* EMPTY
+* @param  EMPTY
+* @param  EMPTY
+* @return EMPTY
+*/
+unsigned long cheque_sender(Cheque *cheque){
+	return cheque->sender;
+}
+
+/*
+* EMPTY
+* @param  EMPTY
+* @param  EMPTY
+* @return EMPTY
+*/
+unsigned long cheque_receiver(Cheque *cheque){
+	return cheque->receiver;
+}
