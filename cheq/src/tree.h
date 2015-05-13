@@ -56,7 +56,7 @@ Tree *tree_init();
 /*
 * Checks if a tree is empty or not.
 * @param tree Pointer to the tree to check if is or not empty.
-* @return     Any number different than zero if its empty. Zero if its not empty.
+* @return     Returns true if empty. Returns false otherwise.
 */
 int tree_empty(Tree *tree);
 
@@ -91,7 +91,7 @@ int tree_height(Tree *tree);
 /*
 * Checks if a tree is or not balanced. Only used to test if auto-balancing was working. May be deleted.
 * @param tree Pointer of the tree to check if its balanced or not.
-* @return     Any number different than zero if its balanced. Zero if its not balanced.
+* @return     Returns true if balanced. Returns false otherwise.
 */
 int tree_balanced(Tree *tree);
 
@@ -155,8 +155,8 @@ int _tree_count(TreeNode **treeNodePtr);
 int _tree_height(TreeNode **treeNodePtr);
 
 /*
-* Gives the balance factor of a given node.
-* @param treeNodePtr Pointer to pointer of the TreeNode that we want to compute the balance factor.
+* Gives the balancePending factor of a given node.
+* @param treeNodePtr Pointer to pointer of the TreeNode that we want to compute the balancePending factor.
 * @return            Balance factor of the node. Formula = height(left child) - height(right child).
 */
 int _tree_balance_factor(TreeNode **treeNodePtr);
@@ -164,13 +164,13 @@ int _tree_balance_factor(TreeNode **treeNodePtr);
 /*
 * Checks if a node is or not balanced. Only used to test if auto-balancing was working. May be deleted.
 * @param treeNodePtr Pointer to pointer of the TreeNode that we want to check if its balanced or not.
-* @return            Any number different than zero if its balanced. Zero if its not balanced.
+* @return            Returns true if balanced. Returns false otherwise.
 */
 int _tree_balanced(TreeNode **treeNodePtr);
 
 /*
 * Balances a given node.
-* @param treeNodePtr Pointer to pointer of the TreeNode that we want to balance.
+* @param treeNodePtr Pointer to pointer of the TreeNode that we want to balancePending.
 */
 void _tree_balance(TreeNode **treeNodePtr);
 
