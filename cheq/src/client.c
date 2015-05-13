@@ -1,6 +1,7 @@
 #include "client.h"
 
-Client client_init(unsigned long reference, unsigned long amountIssuedPending, unsigned long amountReceivingPending, unsigned int chequesIssuedPending, unsigned int chequesReceivingPending) {
+Client client_init(unsigned long reference, unsigned long amountIssuedPending, unsigned long amountReceivingPending,
+                   unsigned int chequesIssuedPending, unsigned int chequesReceivingPending) {
     Client new;
     new.reference = reference;
     new.amountIssuedPending = amountIssuedPending;
@@ -11,31 +12,33 @@ Client client_init(unsigned long reference, unsigned long amountIssuedPending, u
 }
 
 int client_compare(ClientKey clientKey1, ClientKey clientKey2) {
-    if(clientKey1 > clientKey2) return 1;
-    if(clientKey1 < clientKey2) return -1;
+    if (clientKey1 > clientKey2) return 1;
+    if (clientKey1 < clientKey2) return -1;
     return 0;
 }
 
 void client_print(Client *client) {
-    printf("Cliente-info: %lu %u %lu %u %lu\n", client->reference, client->chequesIssuedPending, client->amountIssuedPending, client->chequesReceivingPending, client->amountReceivingPending);
+    printf("Cliente-info: %lu %d %lu %d %lu\n", client->reference, client->chequesIssuedPending,
+           client->amountIssuedPending, client->chequesReceivingPending, client->amountReceivingPending
+    );
 }
 
 int client_update_issued(Client *client, long amount) {
     client->amountIssuedPending += amount;
-    if(amount > 0)
+    if (amount > 0)
         client->chequesIssuedPending++;
     else
         client->chequesIssuedPending--;
-    return !(client->chequesIssuedPending || client->chequesReceivingPending);
+    return client->chequesIssuedPending == 0 && client->chequesReceivingPending == 0;
 }
 
 int client_update_receiving(Client *client, long amount) {
     client->amountReceivingPending += amount;
-    if(amount > 0)
+    if (amount > 0)
         client->chequesReceivingPending++;
     else
         client->chequesReceivingPending--;
-    return !(client->chequesIssuedPending || client->chequesReceivingPending);
+    return client->chequesIssuedPending == 0 && client->chequesReceivingPending == 0;
 }
 
 unsigned long client_key(Client *client) {
