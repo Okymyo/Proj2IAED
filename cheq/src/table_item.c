@@ -18,8 +18,8 @@ unsigned int table_item_hash(TableItemKey itemKey){
 	return hash;
 }
 
-TableItem *table_item_nil(){
-	return NULL;
+TableItem table_item_nil(){
+	return cheque_nil();
 }
 
 void table_item_destroy(TableItem *itemPtr){

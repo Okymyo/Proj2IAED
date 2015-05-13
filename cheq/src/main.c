@@ -1,10 +1,5 @@
 #include "main.h"
 
-#define QUIT 1
-#define CONTINUE 0
-
-#define LINESIZE 512
-
 void parseArguments(int *argc, char argv[ARGUMENTS_NUMBER][ARGUMENT_SIZE]) {
     char line[LINESIZE];
     int linePosition;
@@ -34,6 +29,7 @@ void parseArguments(int *argc, char argv[ARGUMENTS_NUMBER][ARGUMENT_SIZE]) {
 
 /* We have to give tree and table here */
 int requestInput(Database *database) {
+	printf("INPUT PLZ! : ");
     int argc = 0;
     char argv[ARGUMENTS_NUMBER][ARGUMENT_SIZE];
     parseArguments(&argc, argv);

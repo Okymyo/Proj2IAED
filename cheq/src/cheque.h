@@ -63,3 +63,19 @@ unsigned long cheque_receiver(Cheque *cheque);
 * @return EMPTY
 */
 void cheque_print(Cheque *cheque);
+
+/*
+* EMPTY
+* @param  EMPTY
+* @param  EMPTY
+* @return EMPTY
+*/
+Cheque cheque_nil();
+
+/*
+* EMPTY
+* @param  EMPTY
+* @param  EMPTY
+* @return EMPTY
+*/
+int cheque_equal(Cheque *cheque1, Cheque *cheque2);

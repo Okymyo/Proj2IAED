@@ -28,3 +28,16 @@ unsigned long cheque_receiver(Cheque *cheque){
 void cheque_print(Cheque *cheque){
 	printf("Cheque-info: %lu %lu %lu --> %lu\n", cheque->reference, cheque->amount, cheque->sender, cheque->receiver);
 }
+
+Cheque cheque_nil(){
+	Cheque new;
+	new.reference = 0;
+    new.amount = 0;
+    new.sender = 0;
+    new.receiver = 0;
+    return new;
+}
+
+int cheque_equal(Cheque *cheque1, Cheque *cheque2){
+	return cheque1->reference == cheque2->reference;
+}

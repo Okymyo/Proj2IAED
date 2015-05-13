@@ -28,7 +28,7 @@ void table_insert(Table *table, TableItem item){
 void table_insert_pointer(Table *table, TableItem *itemPtr){
 	unsigned int index, temp, collision = 0;
 	TableRow row;
-
+	
 	/* If our table is too full, expand it */
 	if (table->count >= table->size*EXPANDTHRESHOLD)
 		table_resize(table, EXPAND);
@@ -39,30 +39,34 @@ void table_insert_pointer(Table *table, TableItem *itemPtr){
 	temp = index;
 	
 	/* We know we have free space, and our incrementing function (i^2 + i) always succeeds */
-	while (table->data[index].itemPtr != table_item_nil()){
+	while (table->data[index].itemPtr != NULL){
 		collision++;
 		index = (temp + (collision*collision + collision)/2) % table->size;
 	}
 	
 	/* Initialize a row with TableItem item, and with the previously last element */
-	if (table->count > 0)
-		row = table_row_init(itemPtr, index, table->data[table->first].prev);
-	else
-		row = table_row_init(itemPtr, index, index);
-	
-	table->data[index] = row;
 	if (table->count > 0){
+		row = table_row_init(itemPtr, index, table->data[table->first].prev);
 		table->data[table->data[table->first].prev].next = index;
 		table->data[table->first].prev = index;
 	}
 	else{
+		row = table_row_init(itemPtr, index, index);
 		table->first = index;
 	}
 	
+	/* Store row into the table */
+	table->data[index] = row;
+	
+	/* Increment our counter AFTER doing everything else.
+	If we don't, we risk getting trapped in permanent expansion. */
 	table->count++;
 }
 
 TableItem table_unqueue(Table *table){
+	if (table->count == 0)
+		return table_item_nil();
+		
 	return table_remove(table, table_item_key(*table->data[table->first].itemPtr));
 }
 
@@ -75,7 +79,7 @@ TableItem table_remove(Table *table, TableItemKey itemKey){
 	
 	/* If table search just returned our error value, stop */
 	if (index == table->size)
-		return *table_item_nil(); /* <== VE ISSO! MANDASTE CANCRO! */
+		return table_item_nil();
 	
 	/* If the record we just deleted was the first in queue, update what the first in queue is
 	Also update the new first in queue so that its "prev" is the last element. */
@@ -93,11 +97,15 @@ TableItem table_remove(Table *table, TableItemKey itemKey){
 	destroy = *table->data[index].itemPtr;		
 	table_item_destroy(table->data[index].itemPtr);
 	free(table->data[index].itemPtr);
-	table->data[index].itemPtr = table_item_nil();
-	table->count--;
-
+	table->data[index].itemPtr = NULL;
+	
+	/* If our table is too large, shrink it */
 	if (table->count <= table->size*SHRINKTHRESHOLD)
 		table_resize(table, SHRINK);
+		
+	/* Decrement our counter AFTER doing everything else.
+	If we don't, we'll report incorrect sizes (especially to table_resize) */
+	table->count--;
 		
 	return destroy;
 }
@@ -110,8 +118,10 @@ void table_resize(Table *table, float resize){
 	old_first = table->first;
 	old_data = table->data;
 	
-	if (old_size > 0)
+	if (old_size >= 2 && resize == EXPAND)
 		table->size = (unsigned int)(old_size*resize);
+	else if (old_size <= 2 && resize == SHRINK)
+		table->size = 0;
 	else
 		table->size = 2;
 		
@@ -120,10 +130,10 @@ void table_resize(Table *table, float resize){
 	table->count = 0;
 	
 	for (i = 0; i < table->size; i++){
-		table->data[i].itemPtr = table_item_nil();
+		table->data[i].itemPtr = NULL;
 	}
 	
-	if (old_size > 0){
+	if (old_size > 0 && table->size > 0){
 		for (i = old_first;; i = old_data[i].next){
 			table_insert_pointer(table, old_data[i].itemPtr);			
 			/* If we just added our terminator, finish! */
@@ -144,13 +154,22 @@ void table_print(Table *table){
 	unsigned int i;
 	printf("First row:%u\n", table->first);
 	for (i = 0; i < table->size; i++){
-		if (table->data[i].itemPtr != table_item_nil())
+		if (table->data[i].itemPtr != NULL)
 			table_item_print(*table->data[i].itemPtr);
 	}
 }
 
 TableItem *table_search(Table *table, TableItemKey itemKey){
-	return table->data[table_search_row(table, itemKey)].itemPtr;
+	unsigned int index;
+	
+	/* Find the item in the table */
+	index = table_search_row(table, itemKey);
+	
+	/* If table search just returned our error value, stop */
+	if (index == table->size)
+		return NULL;
+		
+	return table->data[index].itemPtr;
 }
 
 unsigned int table_search_row(Table *table, TableItemKey itemKey){
@@ -176,7 +195,7 @@ unsigned int table_search_row(Table *table, TableItemKey itemKey){
 void table_destroy(Table *table){
 	unsigned int i;
 	for (i = 0; i < table->size; i++){
-		if (table->data[i].itemPtr != table_item_nil()){
+		if (table->data[i].itemPtr != NULL){
 			table_item_destroy(table->data[i].itemPtr);
 			free(table->data[i].itemPtr);
 		}

@@ -19,7 +19,7 @@ unsigned int table_item_hash(TableItemKey itemKey);
 * @param  EMPTY
 * @return EMPTY
 */
-TableItem *table_item_nil();
+TableItem table_item_nil();
 
 /*
 * EMPTY
