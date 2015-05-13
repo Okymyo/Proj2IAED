@@ -15,8 +15,7 @@ int client_compare(ClientKey clientKey1, ClientKey clientKey2) {
 }
 
 void client_print(Client client) {
-    printf("[Client] -> Refererence:%li, Balance:%li, Outstanding:%li\n", client.reference, client.amountReceivedPending,
-           client.amountIssuedPending);
+    printf("Cliente-info: %lu %u %lu %u %lu\n", client->reference, client->chequesReceivingPending, client->amountReceivingPending, client->chequesIssuedPending, client->amountIssuedPending);
 }
 
 int client_update_issued(Client *client, long amount) {

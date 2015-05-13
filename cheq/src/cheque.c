@@ -26,5 +26,5 @@ unsigned long cheque_receiver(Cheque *cheque){
 }
 
 void cheque_print(Cheque *cheque){
-	printf("%lu %lu %lu %lu", cheque_reference(cheque), cheque_amount(cheque), cheque_sender(cheque), cheque_receiver(cheque));
+	printf("Cheque-info: %lu %lu %lu --> %lu\n", cheque->reference, cheque->amount, cheque->sender, cheque->receiver);
 }
