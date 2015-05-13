@@ -14,8 +14,8 @@ void database_destroy(Database *database){
 }
 
 void database_cheque(Database *database, unsigned long amount, unsigned long sender, unsigned long receiver, unsigned long reference){
-	client_issue(tree_search(database->tree, sender), amount);
-	client_receiving(tree_search(database->tree, receiver), amount);
+	client_update_issued(tree_search(database->tree, sender), amount);
+	client_update_receiving(tree_search(database->tree, receiver), amount);
 	table_insert(database->table, cheque_init(reference, amount, sender, receiver));
 }
 
@@ -42,7 +42,7 @@ void database_infocheque(Database *database, unsigned long reference){
 }
 
 void database_infoclient(Database *database, unsigned long reference){
-	client_print(*tree_search(database->tree, reference));
+	client_print(tree_search(database->tree, reference));
 }
 
 void database_info(Database *database){
@@ -50,6 +50,7 @@ void database_info(Database *database){
 }
 
 void database_quit(Database *database){
+	Cheque cheque;
 	unsigned int clients = 0, cheques = 0;
 	unsigned long sum;
 	clients = tree_count(database->tree);

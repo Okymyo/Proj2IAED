@@ -82,7 +82,7 @@ void _tree_insert(TreeNode **treeNodePtr, TreeItem treeItem) {
 
 void _tree_remove(TreeNode **treeNodePtr, TreeItemKey itemKey){
     if(*treeNodePtr != NULL){
-        int comparison = tree_item_compare(itemKey, client_key((*treeNodePtr)->item));
+        int comparison = tree_item_compare(itemKey, tree_item_key((*treeNodePtr)->item));
         if(comparison < 0) _tree_remove(&((*treeNodePtr)->left), itemKey);
         else if(comparison > 0) _tree_remove(&((*treeNodePtr)->right), itemKey);
         else{

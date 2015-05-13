@@ -42,6 +42,14 @@ Table *table_init();
 * @param  EMPTY
 * @return EMPTY
 */
+void table_insert(Table *table, TableItem item);
+
+/*
+* EMPTY
+* @param  EMPTY
+* @param  EMPTY
+* @return EMPTY
+*/
 void table_insert_pointer(Table *table, TableItem *itemPtr);
 
 /*
@@ -101,7 +109,7 @@ void table_destroy(Table *table);
 * @param  EMPTY
 * @return EMPTY
 */
-void table_unqueue(Table *table);
+TableItem table_unqueue(Table *table);
 
 /*
 * EMPTY
@@ -109,4 +117,4 @@ void table_unqueue(Table *table);
 * @param  EMPTY
 * @return EMPTY
 */
-void table_remove(Table *table, TableItemKey itemKey);
+TableItem table_remove(Table *table, TableItemKey itemKey);

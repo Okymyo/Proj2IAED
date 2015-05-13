@@ -1,4 +1,5 @@
 #include "table_item.h"
+#include "cheque.h"
 
 #define MAGICCONSTANT 0x45d9f3b
 
@@ -29,5 +30,5 @@ TableItemKey table_item_key(TableItem item){
 }
 
 void table_item_print(TableItem item){
-	printf("%lu %lu %lu %lu\n", item.reference, item.value, item.sender, item.receiver);
+	printf("%lu %lu %lu %lu\n", item.reference, item.amount, item.sender, item.receiver);
 }

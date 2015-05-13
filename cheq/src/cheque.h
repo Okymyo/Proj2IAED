@@ -22,7 +22,7 @@ typedef struct {
 * @param  EMPTY
 * @return EMPTY
 */
-Cheque cheque_init(long reference, long amount, long sender, long receiver);
+Cheque cheque_init(unsigned long reference, unsigned long amount, unsigned long sender, unsigned long receiver);
 
 /*
 * EMPTY

@@ -75,7 +75,7 @@ TableItem table_remove(Table *table, TableItemKey itemKey){
 	
 	/* If table search just returned our error value, stop */
 	if (index == table->size)
-		return;
+		return *table_item_nil(); /* <== VE ISSO! MANDASTE CANCRO! */
 	
 	/* If the record we just deleted was the first in queue, update what the first in queue is
 	Also update the new first in queue so that its "prev" is the last element. */
