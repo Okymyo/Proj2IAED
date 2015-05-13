@@ -30,6 +30,22 @@ void database_destroy(Database *database);
 * @param  EMPTY
 * @return EMPTY
 */
+Tree *database_tree(Database *database);
+
+/*
+* EMPTY
+* @param  EMPTY
+* @param  EMPTY
+* @return EMPTY
+*/
+Table *database_table(Database *database);
+
+/*
+* EMPTY
+* @param  EMPTY
+* @param  EMPTY
+* @return EMPTY
+*/
 void database_cheque(Database *database, unsigned long value, unsigned long sender, unsigned long receiver, unsigned long reference);
 
 /*

@@ -66,6 +66,9 @@ TableRow table_row_init(TableItem *itemPtr, unsigned int next, unsigned int prev
 * @param  EMPTY
 * @return EMPTY
 */
+unsigned int table_count(Table *table);
+
+/* DELETE!!!!!! */
 void table_print(Table *table);
 
 /*
@@ -74,7 +77,15 @@ void table_print(Table *table);
 * @param  EMPTY
 * @return EMPTY
 */
-unsigned int table_search(Table *table, TableItemKey itemKey);
+TableItem *table_search(Table *table, TableItemKey itemKey);
+
+/*
+* EMPTY
+* @param  EMPTY
+* @param  EMPTY
+* @return EMPTY
+*/
+unsigned int table_search_row(Table *table, TableItemKey itemKey);
 
 /*
 * EMPTY

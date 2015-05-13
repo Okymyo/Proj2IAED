@@ -11,7 +11,7 @@
 */
 typedef struct {
     unsigned long reference;
-	unsigned long value;
+	unsigned long amount;
     unsigned long sender;
 	unsigned long receiver;
 } Cheque;
@@ -22,7 +22,7 @@ typedef struct {
 * @param  EMPTY
 * @return EMPTY
 */
-Cheque cheque_init(long reference, long value, long sender, long receiver);
+Cheque cheque_init(long reference, long amount, long sender, long receiver);
 
 /*
 * EMPTY
@@ -38,7 +38,7 @@ unsigned long cheque_reference(Cheque *cheque);
 * @param  EMPTY
 * @return EMPTY
 */
-unsigned long cheque_value(Cheque *cheque);
+unsigned long cheque_amount(Cheque *cheque);
 
 /*
 * EMPTY
@@ -55,3 +55,11 @@ unsigned long cheque_sender(Cheque *cheque);
 * @return EMPTY
 */
 unsigned long cheque_receiver(Cheque *cheque);
+
+/*
+* EMPTY
+* @param  EMPTY
+* @param  EMPTY
+* @return EMPTY
+*/
+void cheque_print(Cheque *cheque);

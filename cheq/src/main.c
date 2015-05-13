@@ -1,10 +1,5 @@
 #include "main.h"
 
-#define QUIT 1
-#define CONTINUE 0
-
-#define LINESIZE 512
-
 void parseArguments(int *argc, char argv[ARGUMENTS_NUMBER][ARGUMENT_SIZE]) {
     char line[LINESIZE];
     int linePosition;

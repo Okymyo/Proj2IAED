@@ -62,15 +62,16 @@ void table_insert_pointer(Table *table, TableItem *itemPtr){
 	table->count++;
 }
 
-void table_unqueue(Table *table){
-	table_remove(table, table_item_key(*table->data[table->first].itemPtr));
+TableItem table_unqueue(Table *table){
+	return table_remove(table, table_item_key(*table->data[table->first].itemPtr));
 }
 
-void table_remove(Table *table, TableItemKey itemKey){
+TableItem table_remove(Table *table, TableItemKey itemKey){
 	unsigned int index;
+	TableItem destroy;
 
 	/* Find the item in the table */
-	index = table_search(table, itemKey);
+	index = table_search_row(table, itemKey);
 	
 	/* If table search just returned our error value, stop */
 	if (index == table->size)
@@ -88,7 +89,8 @@ void table_remove(Table *table, TableItemKey itemKey){
 		table->data[table->data[index].prev].next = table->data[index].next;
 		table->data[table->data[index].next].prev = table->data[index].prev;
 	}
-		
+	
+	destroy = *table->data[index].itemPtr;		
 	table_item_destroy(table->data[index].itemPtr);
 	free(table->data[index].itemPtr);
 	table->data[index].itemPtr = table_item_nil();
@@ -96,6 +98,8 @@ void table_remove(Table *table, TableItemKey itemKey){
 
 	if (table->count <= table->size*SHRINKTHRESHOLD)
 		table_resize(table, SHRINK);
+		
+	return destroy;
 }
 
 void table_resize(Table *table, float resize){
@@ -131,6 +135,11 @@ void table_resize(Table *table, float resize){
 	free(old_data);
 }
 
+unsigned int table_count(Table *table){
+	return table->count;
+}
+
+/* DELETE!!!! */
 void table_print(Table *table){
 	unsigned int i;
 	printf("First row:%u\n", table->first);
@@ -140,7 +149,11 @@ void table_print(Table *table){
 	}
 }
 
-unsigned int table_search(Table *table, TableItemKey itemKey){
+TableItem *table_search(Table *table, TableItemKey itemKey){
+	return table->data[table_search_row(table, itemKey)].itemPtr;
+}
+
+unsigned int table_search_row(Table *table, TableItemKey itemKey){
 	unsigned int index, temp, collision = 0;
 		
 	/* Calculate the index for this item */
