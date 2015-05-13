@@ -17,8 +17,7 @@ int client_compare(ClientKey clientKey1, ClientKey clientKey2) {
 }
 
 void client_print(Client *client) {
-    printf("[Client] -> Refererence:%li, Balance:%li, Outstanding:%li\n", client->reference, client->amountReceivingPending,
-           client->amountIssuedPending);
+    printf("Cliente-info: %lu %u %lu %u %lu\n", client->reference, client->chequesIssuedPending, client->amountIssuedPending, client->chequesReceivingPending, client->amountReceivingPending);
 }
 
 int client_update_issued(Client *client, long amount) {
@@ -27,7 +26,7 @@ int client_update_issued(Client *client, long amount) {
         client->chequesIssuedPending++;
     else
         client->chequesIssuedPending--;
-    return client->chequesIssuedPending && client->chequesReceivingPending;
+    return !(client->chequesIssuedPending || client->chequesReceivingPending);
 }
 
 int client_update_receiving(Client *client, long amount) {
@@ -36,7 +35,7 @@ int client_update_receiving(Client *client, long amount) {
         client->chequesReceivingPending++;
     else
         client->chequesReceivingPending--;
-    return client->chequesIssuedPending && client->chequesReceivingPending;
+    return !(client->chequesIssuedPending || client->chequesReceivingPending);
 }
 
 unsigned long client_key(Client *client) {
