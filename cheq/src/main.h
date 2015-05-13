@@ -3,6 +3,10 @@
 
 #define ARGUMENT_SIZE 12
 #define ARGUMENTS_NUMBER 5
+#define LINESIZE 512
+
+#define QUIT 1
+#define CONTINUE 0
 
 /*
 * EMPTY

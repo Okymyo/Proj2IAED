@@ -4,6 +4,8 @@
 #define SHRINKTHRESHOLD 0.2	/* If table is less than 20% full, shrink it */
 #define EXPAND 2			/* If we're expanding, we duplicate the size. MUST remain power of two! */
 #define SHRINK 0.5			/* If we're shrinking, halve the size. MUST remain power of two! */
+							/* We require power of two for our incrementation function to go through
+							   every record in the table. */
 
 TableRow table_row_init(TableItem *itemPtr, unsigned int next, unsigned int previous){
 	TableRow row;
