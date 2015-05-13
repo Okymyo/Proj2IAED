@@ -35,6 +35,7 @@ void tree_insert(Tree *tree, TreeItem treeItem) {
 }
 
 void tree_remove(Tree *tree, TreeItemKey itemKey){
+    _tree_remove(&tree->root, itemKey);
 }
 
 int tree_count(Tree *tree) {
@@ -76,6 +77,42 @@ void _tree_insert(TreeNode **treeNodePtr, TreeItem treeItem) {
         _tree_insert(&((*treeNodePtr)->right), treeItem);
     }
     _tree_balance(treeNodePtr);
+}
+
+
+void _tree_remove(TreeNode **treeNodePtr, TreeItemKey itemKey){
+    if(*treeNodePtr != NULL){
+        int comparison = tree_item_compare(itemKey, client_key((*treeNodePtr)->item));
+        if(comparison < 0) _tree_remove(&((*treeNodePtr)->left), itemKey);
+        else if(comparison > 0) _tree_remove(&((*treeNodePtr)->right), itemKey);
+        else{
+            if((*treeNodePtr)->left != NULL && (*treeNodePtr)->right != NULL){
+                TreeNode *max = _tree_max(&(*treeNodePtr)->left);
+                (*treeNodePtr)->item = max->item;
+                _tree_remove(&((*treeNodePtr)->left), tree_item_key(max->item));
+            }else{
+                TreeNode *aux = *treeNodePtr;
+                if((*treeNodePtr)->left == NULL && (*treeNodePtr)->right == NULL){
+                    *treeNodePtr = NULL;
+                }else{
+                    if((*treeNodePtr)->left == NULL){
+                        *treeNodePtr = (*treeNodePtr)->right;
+                    }else{
+                        *treeNodePtr = (*treeNodePtr)->left;
+                    }
+                }
+                treenode_destroy(aux);
+            }
+        }
+    }
+}
+
+
+TreeNode *_tree_max(TreeNode **treeNodePtr) {
+    if(*treeNodePtr != NULL && (*treeNodePtr)->right != NULL){
+        return _tree_max(&((*treeNodePtr)->right));
+    }
+    return *treeNodePtr;
 }
 
 int _tree_count(TreeNode **treeNodePtr) {

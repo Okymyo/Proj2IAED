@@ -127,6 +127,20 @@ void tree_destroy(Tree *tree);
 void _tree_insert(TreeNode **treeNodePtr, TreeItem treeItem);
 
 /*
+* Removes item with specified key from a given node, or from it's children.
+* @param treeNodePtr Pointer to pointer of the TreeNode that we want to remove the item from.
+* @param itemKey     Key of the item we want to remove.
+*/
+void _tree_remove(TreeNode **treeNodePtr, TreeItemKey itemKey);
+
+/*
+* Gives a pointer to child which is in the most right position in a given tree node.
+* @param treeNodePtr Pointer to pointer of the TreeNode where we are going to search the most right child.
+* @return            Returns a pointer to the child that is in the most right position.
+*/
+TreeNode *_tree_max(TreeNode **treeNodePtr);
+
+/*
 * Counts the number of children of a given node.
 * @param treeNodePtr Pointer to pointer of the TreeNode that we want to count the children.
 * @return            Number of children that the node has.

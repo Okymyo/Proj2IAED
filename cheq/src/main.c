@@ -3,9 +3,7 @@
 #define QUIT 1
 #define CONTINUE 0
 
-#define ARGUMENT_SIZE 12
 #define LINESIZE 512
-#define ARGUMENTS_NUMBER 5
 
 void parseArguments(int *argc, char argv[ARGUMENTS_NUMBER][ARGUMENT_SIZE]) {
     char line[LINESIZE];
@@ -31,7 +29,7 @@ void parseArguments(int *argc, char argv[ARGUMENTS_NUMBER][ARGUMENT_SIZE]) {
             (*argc)++;
         }
     }
-	argv[*argc][wordPosition] = '\0';
+    argv[*argc][wordPosition] = '\0';
 }
 
 /* We have to give tree and table here */
