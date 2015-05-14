@@ -61,7 +61,7 @@ void database_infocheque(Database *database, unsigned long reference){
 }
 
 void database_infoclient(Database *database, unsigned long reference){
-	client_print(tree_search(database->tree, reference));
+	client_print(tree_search(database->tree, reference), "Cliente-info: ");
 }
 
 void database_info(Database *database){

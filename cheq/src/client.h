@@ -45,8 +45,9 @@ int client_compare(ClientKey clientKey1, ClientKey clientKey2);
 /*
 * Prints a given client.
 * @param client Pointer to the client that we want to print.
+* @param prefix Prefix that we want to append before the client info is printed.
 */
-void client_print(Client *client);
+void client_print(Client *client, char * prefix);
 
 /*
  * Updates the issued amount of a given client.

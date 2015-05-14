@@ -9,7 +9,7 @@ TreeItemKey tree_item_key(TreeItem treeItem) {
 }
 
 void tree_item_print(TreeItem treeItem) {
-    client_print(&treeItem);
+    client_print(&treeItem, "*");
 }
 
 void tree_item_destroy(TreeItem treeItem) {
