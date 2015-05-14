@@ -28,7 +28,3 @@ void table_item_destroy(TableItem *itemPtr){
 TableItemKey table_item_key(TableItem item){
 	return item.reference;
 }
-
-void table_item_print(TableItem item){
-	printf("%lu %lu %lu %lu\n", item.reference, item.amount, item.sender, item.receiver);
-}

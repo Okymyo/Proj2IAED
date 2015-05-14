@@ -6,41 +6,27 @@ typedef Cheque TableItem;
 typedef unsigned long TableItemKey;
 
 /*
-* EMPTY
-* @param  EMPTY
-* @param  EMPTY
-* @return EMPTY
+* Hashes a given TableItemKey.
+* @param itemKey TableItemKey to be hashed with our hashing function.
+* @return        Resulting output from our hashing function.
 */
 unsigned int table_item_hash(TableItemKey itemKey);
 
 /*
-* EMPTY
-* @param  EMPTY
-* @param  EMPTY
-* @return EMPTY
+* Returns the value to be indicator of a nil TableItem.
+* @return TableItem we define as nil.
 */
 TableItem table_item_nil();
 
 /*
-* EMPTY
-* @param  EMPTY
-* @param  EMPTY
-* @return EMPTY
+* Deallocate a given TableItem
+* @param TableItem to be deallocated
 */
 void table_item_destroy(TableItem *item);
 
 /*
-* EMPTY
-* @param  EMPTY
-* @param  EMPTY
-* @return EMPTY
+* Returns the TableItemKey matching a given TableItem.
+* @param item TableItem whose key we're returning.
+* @return     TableItemKey referring to the item.
 */
 TableItemKey table_item_key(TableItem item);
-
-/*
-* EMPTY
-* @param  EMPTY
-* @param  EMPTY
-* @return EMPTY
-*/
-void table_item_print(TableItem item);

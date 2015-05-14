@@ -165,17 +165,6 @@ unsigned int table_count(Table *table){
 	return table->count;
 }
 
-/* DELETE!!!! */
-void table_print(Table *table){
-	unsigned int i;
-	printf("First row:%u  Count:%u\n", table->first, table->count);
-	for (i = 0; i < table->size; i++){
-		if (table_item_ptr_nil(table->data[i].itemPtr)){
-			printf("Row:%3u  Next:%3u  Previous:%3u\n", i, table->data[i].next, table->data[i].prev);
-		}
-	}
-}
-
 TableItem *table_search(Table *table, TableItemKey itemKey){
 	unsigned int index;
 	
@@ -191,6 +180,9 @@ TableItem *table_search(Table *table, TableItemKey itemKey){
 
 unsigned int table_search_row(Table *table, TableItemKey itemKey){
 	unsigned int index, temp, collision = 0;
+
+	if (table->size == 0)
+		return table->size;
 		
 	/* Calculate the index for this item */
 	index = table_item_hash(itemKey) % table->size;
