@@ -1,6 +1,6 @@
 #include "table.h"
 
-#define EXPANDTHRESHOLD 0.7	/* If table gets over 70% full, expand it */
+#define EXPANDTHRESHOLD 0.9	/* If table gets over 90% full, expand it */
 #define SHRINKTHRESHOLD 0.2	/* If table is less than 20% full, shrink it */
 #define EXPAND 2			/* If we're expanding, we duplicate the size. MUST remain power of two! */
 #define SHRINK 0.5			/* If we're shrinking, halve the size. MUST remain power of two! */
@@ -17,6 +17,15 @@ TableRow table_row_init(TableItem *itemPtr, unsigned int next, unsigned int prev
 
 Table *table_init(){
 	return (Table*)calloc(1, sizeof(Table));
+}
+
+int table_item_ptr_nil(TableItem *itemPtr){
+	return itemPtr == NULL || itemPtr == table_grave();
+}
+
+TableItem *table_grave(){
+	/* We're returning a pointer to this own function, and this is now our "grave" pointer */
+	return (TableItem*)&table_grave;
 }
 
 void table_insert(Table *table, TableItem item){
@@ -38,8 +47,9 @@ void table_insert_pointer(Table *table, TableItem *itemPtr){
 	
 	temp = index;
 	
-	/* We know we have free space, and our incrementing function (i^2 + i) always succeeds */
-	while (table->data[index].itemPtr != NULL){
+	/* We know we have free space, and our incrementing function (i^2 + i) always succeeds.
+	Once it finds a NULL or a grave, it stores it there */
+	while (!table_item_ptr_nil(table->data[index].itemPtr)){
 		collision++;
 		index = (temp + (collision*collision + collision)/2) % table->size;
 	}
@@ -103,7 +113,7 @@ TableItem table_remove(Table *table, TableItemKey itemKey){
 	destroy = *table->data[index].itemPtr;		
 	table_item_destroy(table->data[index].itemPtr);
 	free(table->data[index].itemPtr);
-	table->data[index].itemPtr = NULL;
+	table->data[index].itemPtr = table_grave();
 	
 	/* Decrement our counter BEFORE doing the resize.
 	If we don't, we'll report incorrect sizes to table_resize */
@@ -160,7 +170,7 @@ void table_print(Table *table){
 	unsigned int i;
 	printf("First row:%u  Count:%u\n", table->first, table->count);
 	for (i = 0; i < table->size; i++){
-		if (table->data[i].itemPtr != NULL){
+		if (table_item_ptr_nil(table->data[i].itemPtr)){
 			printf("Row:%3u  Next:%3u  Previous:%3u\n", i, table->data[i].next, table->data[i].prev);
 		}
 	}
@@ -187,22 +197,23 @@ unsigned int table_search_row(Table *table, TableItemKey itemKey){
 	
 	temp = index;
 	/* We know we have free space, and our incrementing function (i^2 + i) always succeeds */
-	while (collision < table->size && (table->data[index].itemPtr == NULL || table_item_key(*table->data[index].itemPtr) != itemKey)){
+	while (collision < table->size && (table->data[index].itemPtr == table_grave() || (table->data[index].itemPtr != NULL && table_item_key(*table->data[index].itemPtr) != itemKey))){
 		collision++;
 		index = (temp + (collision*collision + collision)/2) % table->size;
 	}
 	
-	/* If we stopped searching because we went through every possible position, return our "nothing found" value */
-	if (collision >= table->size)
+	/* If we stopped searching because we went through every possible position or because
+	we found a return our "nothing found" value */
+	if (collision >= table->size || table_item_ptr_nil(table->data[index].itemPtr))
 		return table->size;
-	
+
 	return index;
 }
 
 void table_destroy(Table *table){
 	unsigned int i;
 	for (i = 0; i < table->size; i++){
-		if (table->data[i].itemPtr != NULL){
+		if (!table_item_ptr_nil(table->data[i].itemPtr)){
 			table_item_destroy(table->data[i].itemPtr);
 			free(table->data[i].itemPtr);
 		}

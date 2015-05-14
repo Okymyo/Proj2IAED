@@ -42,6 +42,22 @@ Table *table_init();
 * @param  EMPTY
 * @return EMPTY
 */
+int table_item_ptr_nil(TableItem *itemPtr);
+
+/*
+* EMPTY
+* @param  EMPTY
+* @param  EMPTY
+* @return EMPTY
+*/
+TableItem *table_grave();
+
+/*
+* EMPTY
+* @param  EMPTY
+* @param  EMPTY
+* @return EMPTY
+*/
 void table_insert(Table *table, TableItem item);
 
 /*
