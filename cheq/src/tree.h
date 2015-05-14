@@ -1,4 +1,5 @@
 #pragma once
+
 #include "includes.h"
 #include "tree_item.h"
 
@@ -12,6 +13,7 @@
 typedef struct treenode {
     TreeItem item;
     struct treenode *left, *right;
+    int height;
 } TreeNode;
 
 /*
@@ -32,10 +34,11 @@ typedef struct {
 * Creates a new tree node.
 * @param treeItem  Item that the new node will hold.
 * @param leftNode  Pointer of the left child of the new node.
-* @param rightNode Pointer of the right child of the new node.\
+* @param rightNode Pointer of the right child of the new node.
+* @param height    Height of the new node.
 * @return          Pointer to the newly created tree node.
 */
-TreeNode *treenode_init(TreeItem treeItem, TreeNode *leftNode, TreeNode *rightNode);
+TreeNode *treenode_init(TreeItem treeItem, TreeNode *leftNode, TreeNode *rightNode, int height);
 
 /*
 * Destroys/frees a given tree node.
