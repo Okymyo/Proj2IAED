@@ -1,23 +1,20 @@
 #include "tree.h"
 
+#ifndef max
+#define max(a, b) a > b? a :b
+#endif
+
 /* ================================================================== */
 /* TreeNode methods */
 /* ================================================================== */
 
-TreeNode *treenode_init(TreeItem treeItem, TreeNode *leftNode, TreeNode *rightNode, int height) {
+TreeNode *treenode_init(TreeItem treeItem, TreeNode *leftNode, TreeNode *rightNode) {
     TreeNode *new = (TreeNode *) malloc(sizeof(TreeNode));
     new->item = treeItem;
     new->left = leftNode;
     new->right = rightNode;
-    new->height = height;
+    new->height = 0;
     return new;
-}
-
-int _tree_height(TreeNode **treeNodePtr) {
-    if (*treeNodePtr != NULL) {
-        return (*treeNodePtr)->height;
-    }
-    return 0;
 }
 
 void treenode_destroy(TreeNode *treeNode) {
@@ -76,7 +73,7 @@ void tree_destroy(Tree *tree) {
 
 void _tree_insert(TreeNode **treeNodePtr, TreeItem treeItem) {
     if (*treeNodePtr == NULL) {
-        *treeNodePtr = treenode_init(treeItem, NULL, NULL, 1);
+        *treeNodePtr = treenode_init(treeItem, NULL, NULL);
         return;
     }
     if (tree_item_compare(tree_item_key(treeItem), tree_item_key((*treeNodePtr)->item)) < 0) {
@@ -112,6 +109,7 @@ void _tree_remove(TreeNode **treeNodePtr, TreeItemKey itemKey) {
                 treenode_destroy(aux);
             }
         }
+        _tree_balance(treeNodePtr);
     }
 }
 
@@ -130,6 +128,17 @@ int _tree_count(TreeNode **treeNodePtr) {
     return 0;
 }
 
+int _tree_height(TreeNode **treeNodePtr) {
+    if (*treeNodePtr != NULL) {
+        return (*treeNodePtr)->height;
+    }
+    return -1;
+}
+
+void _tree_recalculate_height(TreeNode **treeNodePtr){
+    (*treeNodePtr)->height = max(_tree_height(&((*treeNodePtr)->left)), _tree_height(&((*treeNodePtr)->right)))+1;
+}
+
 int _tree_balance_factor(TreeNode **treeNodePtr) {
     if (*treeNodePtr != NULL) {
         return _tree_height((&(*treeNodePtr)->left)) - _tree_height((&(*treeNodePtr)->right));
@@ -138,20 +147,14 @@ int _tree_balance_factor(TreeNode **treeNodePtr) {
 }
 
 void _tree_rotate_left(TreeNode **treeNodePtr) {
-    int height_left, height_right;
-
     TreeNode *nodeRight = (*treeNodePtr)->right;
     (*treeNodePtr)->right = nodeRight->left;
     nodeRight->left = *treeNodePtr;
+
+    _tree_recalculate_height(treeNodePtr);
+    _tree_recalculate_height(&nodeRight);
+
     *treeNodePtr = nodeRight;
-
-    height_left = _tree_height(&((*treeNodePtr)->left));
-    height_right = _tree_height(&((*treeNodePtr))->right);
-    (*treeNodePtr)->height = height_left > height_right ? height_left + 1 : height_right + 1;
-
-    height_left = _tree_height(&(nodeRight->left));
-    height_right = _tree_height((&(*treeNodePtr)->right));
-    nodeRight->height = height_left > height_right ? height_left + 1 : height_right + 1;
 }
 
 void _tree_rotate_left_right(TreeNode **treeNodePtr) {
@@ -162,19 +165,14 @@ void _tree_rotate_left_right(TreeNode **treeNodePtr) {
 }
 
 void _tree_rotate_right(TreeNode **treeNodePtr) {
-    int height_left, height_right;
-
     TreeNode *nodeLeft = (*treeNodePtr)->left;
     (*treeNodePtr)->left = nodeLeft->right;
     nodeLeft->right = *treeNodePtr;
-    *treeNodePtr = nodeLeft;
 
-    height_left = _tree_height(&((*treeNodePtr)->left));
-    height_right = _tree_height(&((*treeNodePtr)->right));
-    (*treeNodePtr)->height = height_left > height_right ? height_left + 1 : height_right + 1;
-    height_left = _tree_height(&(nodeLeft->left));
-    height_right = _tree_height(&((*treeNodePtr)->right));
-    nodeLeft->height = height_left > height_right ? height_left + 1 : height_right + 1;
+    _tree_recalculate_height(treeNodePtr);
+    _tree_recalculate_height(&nodeLeft);
+
+    *treeNodePtr = nodeLeft;
 }
 
 void _tree_rotate_right_left(TreeNode **treeNodePtr) {
@@ -201,9 +199,7 @@ void _tree_balance(TreeNode **treeNodePtr) {
             _tree_rotate_right_left(treeNodePtr);
         }
     }else{
-        int height_left = _tree_height(&((*treeNodePtr)->left));
-        int height_right = _tree_height(&((*treeNodePtr)->right));
-        (*treeNodePtr)->height = height_left > height_right ? height_left + 1 : height_right + 1;
+        _tree_recalculate_height(treeNodePtr);
     }
 }
 

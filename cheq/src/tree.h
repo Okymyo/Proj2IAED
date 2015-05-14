@@ -34,11 +34,10 @@ typedef struct {
 * Creates a new tree node.
 * @param treeItem  Item that the new node will hold.
 * @param leftNode  Pointer of the left child of the new node.
-* @param rightNode Pointer of the right child of the new node.
-* @param height    Height of the new node.
+* @param rightNode Pointer of the right child of the new node.\
 * @return          Pointer to the newly created tree node.
 */
-TreeNode *treenode_init(TreeItem treeItem, TreeNode *leftNode, TreeNode *rightNode, int height);
+TreeNode *treenode_init(TreeItem treeItem, TreeNode *leftNode, TreeNode *rightNode);
 
 /*
 * Destroys/frees a given tree node.
@@ -156,6 +155,12 @@ int _tree_count(TreeNode **treeNodePtr);
 * @return            Height of the node, keep in mind that leafs count as zero.
 */
 int _tree_height(TreeNode **treeNodePtr);
+
+/*
+* Recalculates the height of a given node.
+* @param treeNodePtr Pointer to pointer of the TreeNode that we want to recalculate the height.
+*/
+void _tree_recalculate_height(TreeNode **treeNodePtr);
 
 /*
 * Gives the balancePending factor of a given node.
