@@ -43,16 +43,12 @@ void tree_remove(Tree *tree, TreeItemKey itemKey) {
     _tree_remove(&tree->root, itemKey);
 }
 
-int tree_count(Tree *tree) {
+unsigned int tree_count(Tree *tree) {
     return _tree_count(&tree->root);
 }
 
 int tree_height(Tree *tree) {
     return _tree_height(&tree->root);
-}
-
-int tree_balanced(Tree *tree) {
-    return _tree_balanced(&tree->root);
 }
 
 TreeItem *tree_search(Tree *tree, TreeItemKey itemKey) {
@@ -121,7 +117,7 @@ TreeNode *_tree_max(TreeNode **treeNodePtr) {
     return *treeNodePtr;
 }
 
-int _tree_count(TreeNode **treeNodePtr) {
+unsigned int _tree_count(TreeNode **treeNodePtr) {
     if (*treeNodePtr != NULL) {
         return 1 + _tree_count(&((*treeNodePtr)->left)) + _tree_count(&((*treeNodePtr)->right));
     }
@@ -201,17 +197,6 @@ void _tree_balance(TreeNode **treeNodePtr) {
     }else{
         _tree_recalculate_height(treeNodePtr);
     }
-}
-
-int _tree_balanced(TreeNode **treeNodePtr) {
-    if (*treeNodePtr != NULL) {
-        int factor = _tree_balance_factor(treeNodePtr);
-        if (factor <= 1 && factor >= -1) {
-            return _tree_balanced(&((*treeNodePtr)->left)) && _tree_balanced(&((*treeNodePtr)->right));
-        }
-        return 0;
-    }
-    return 1;
 }
 
 TreeItem *_tree_search(TreeNode **treeNodePtr, TreeItemKey itemKey) {

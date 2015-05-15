@@ -6,6 +6,13 @@ typedef Cheque TableItem;
 typedef unsigned long TableItemKey;
 
 /*
+* Returns the TableItemKey matching a given TableItem.
+* @param item TableItem whose key we're returning.
+* @return     TableItemKey referring to the item.
+*/
+TableItemKey table_item_key(TableItem item);
+
+/*
 * Hashes a given TableItemKey.
 * @param itemKey TableItemKey to be hashed with our hashing function.
 * @return        Resulting output from our hashing function.
@@ -23,10 +30,3 @@ TableItem table_item_nil();
 * @param TableItem to be deallocated
 */
 void table_item_destroy(TableItem *item);
-
-/*
-* Returns the TableItemKey matching a given TableItem.
-* @param item TableItem whose key we're returning.
-* @return     TableItemKey referring to the item.
-*/
-TableItemKey table_item_key(TableItem item);

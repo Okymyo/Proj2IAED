@@ -8,7 +8,8 @@
 *  -> A TreeItem, that is the item that the node will hold.
 *  -> A pointer to a treenode structure that will hold where the left child of the node is.
 *  -> A pointer to a treenode structure that will hold where the right child of the node is.
-* Size: sizeof(TreeItem) + 16 bytes.
+*  -> A int, that is the height of the node.
+* Size: sizeof(TreeItem) + 20 bytes.
 */
 typedef struct treenode {
     TreeItem item;
@@ -81,7 +82,7 @@ void tree_remove(Tree *tree, TreeItemKey itemKey);
 * @param tree Pointer to the tree to count the elements.
 * @return     Number of elements in the tree.
 */
-int tree_count(Tree *tree);
+unsigned int tree_count(Tree *tree);
 
 /*
 * Checks the height of a given tree.
@@ -89,13 +90,6 @@ int tree_count(Tree *tree);
 * @return     Height of the tree, keep in mind that leafs count as zero.
 */
 int tree_height(Tree *tree);
-
-/*
-* Checks if a tree is or not balanced. Only used to test if auto-balancing was working. May be deleted.
-* @param tree Pointer of the tree to check if its balanced or not.
-* @return     Returns true if balanced. Returns false otherwise.
-*/
-int tree_balanced(Tree *tree);
 
 /*
 * Searches a tree item in a given tree that has a given key.
@@ -147,7 +141,7 @@ TreeNode *_tree_max(TreeNode **treeNodePtr);
 * @param treeNodePtr Pointer to pointer of the TreeNode that we want to count the children.
 * @return            Number of children that the node has.
 */
-int _tree_count(TreeNode **treeNodePtr);
+unsigned int _tree_count(TreeNode **treeNodePtr);
 
 /*
 * Gives the height of a given node.
@@ -168,13 +162,6 @@ void _tree_recalculate_height(TreeNode **treeNodePtr);
 * @return            Balance factor of the node. Formula = height(left child) - height(right child).
 */
 int _tree_balance_factor(TreeNode **treeNodePtr);
-
-/*
-* Checks if a node is or not balanced. Only used to test if auto-balancing was working. May be deleted.
-* @param treeNodePtr Pointer to pointer of the TreeNode that we want to check if its balanced or not.
-* @return            Returns true if balanced. Returns false otherwise.
-*/
-int _tree_balanced(TreeNode **treeNodePtr);
 
 /*
 * Balances a given node.
