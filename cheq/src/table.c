@@ -7,8 +7,8 @@
 
 #include "table.h"
 
-#define EXPANDTHRESHOLD 0.8    /* If table gets over 80% full, expand it */
-#define SHRINKTHRESHOLD 0.2    /* If table is less than 20% full, shrink it */
+#define EXPANDTHRESHOLD 0.7    /* If table gets over 70% full, expand it */
+#define SHRINKTHRESHOLD 0.1    /* If table is less than 10% full, shrink it */
 #define EXPAND 2               /* If we're expanding, we duplicate the size. MUST remain power of two! */
 #define SHRINK 0.5             /* If we're shrinking, halve the size. MUST remain power of two! */
                                /* We require power of two for our incrementation function to go through
@@ -218,13 +218,13 @@ void table_resize(Table *table, float resize) {
 
 	/* Our multiplication factor can't get out of a size 0, or into size 0.
 	To fix that, if we were shrinking to 0, we force size to 0, and if we are
-	expanding from 0, we force size to 2. */
-    if (old_size >= 2 && resize == EXPAND)
+	expanding from 0, we give it a little push to 8. */
+    if (old_size >= 2 && table->count != 0)
         table->size = (unsigned int) (old_size * resize);
     else if (table->count == 0 && resize == SHRINK)
         table->size = 0;
     else
-        table->size = 2;
+        table->size = 8;
 
 	/* Allocate space for our new TableRows */
     table->data = malloc(sizeof(TableRow) * table->size);
