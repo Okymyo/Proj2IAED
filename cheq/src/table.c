@@ -106,7 +106,7 @@ TableItem table_unqueue(Table *table) {
     if (table->count == 0)
         return table_item_nil();
 
-	/* If we have a first item,  */
+	/* If we have a first item, send it to our table_remove to be deleted */
     return table_remove(table, table_item_key(*table->data[table->first].itemPtr));
 }
 
