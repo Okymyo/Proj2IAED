@@ -2,10 +2,13 @@
 
 #define EXPANDTHRESHOLD 0.9    /* If table gets over 90% full, expand it */
 #define SHRINKTHRESHOLD 0.2    /* If table is less than 20% full, shrink it */
-#define EXPAND 2            /* If we're expanding, we duplicate the size. MUST remain power of two! */
-#define SHRINK 0.5            /* If we're shrinking, halve the size. MUST remain power of two! */
-/* We require power of two for our incrementation function to go through
-   every record in the table. */
+#define EXPAND 2               /* If we're expanding, we duplicate the size. MUST remain power of two! */
+#define SHRINK 0.5             /* If we're shrinking, halve the size. MUST remain power of two! */
+                               /* We require power of two for our incrementation function to go through
+                               every record in the table. */
+
+/* This is our incrementation function for collisions: (i*i + i)/2, which has perfect iteration
+(goes through every row) through any hash table that is power of two in size */
 #define increment(i) (i*i + i)/2
 
 /* We dislike global variables as much as everyone else, but we need something to mean "grave".
