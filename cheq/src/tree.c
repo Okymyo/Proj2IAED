@@ -54,10 +54,6 @@ unsigned int tree_count(Tree *tree) {
     return _tree_count(&tree->root);
 }
 
-int tree_height(Tree *tree) {
-    return _tree_height(&tree->root);
-}
-
 TreeItem *tree_search(Tree *tree, TreeItemKey itemKey) {
     return _tree_search(&(tree->root), itemKey);
 }
@@ -76,14 +72,18 @@ void tree_destroy(Tree *tree) {
 
 void _tree_insert(TreeNode **treeNodePtr, TreeItem treeItem) {
     if (*treeNodePtr == NULL) {
+        /* We hit the bottom! Make a new leaf */
         *treeNodePtr = treenode_init(treeItem, NULL, NULL);
         return;
     }
     if (tree_item_compare(tree_item_key(treeItem), tree_item_key((*treeNodePtr)->item)) < 0) {
+        /* If the key is lesser than this nodes' item key, go insert it in the left subtree */
         _tree_insert(&((*treeNodePtr)->left), treeItem);
     } else {
+        /* If the key is bigger than this nodes' item key, go insert it in the right subtree */
         _tree_insert(&((*treeNodePtr)->right), treeItem);
     }
+    /* Balance it! */
     _tree_balance(treeNodePtr);
 }
 
@@ -91,33 +91,46 @@ void _tree_insert(TreeNode **treeNodePtr, TreeItem treeItem) {
 void _tree_remove(TreeNode **treeNodePtr, TreeItemKey itemKey) {
     if (*treeNodePtr != NULL) {
         int comparison = tree_item_compare(itemKey, tree_item_key((*treeNodePtr)->item));
+        /* If the key is lesser than this nodes' item key, go delete it from the left subtree */
         if (comparison < 0) _tree_remove(&((*treeNodePtr)->left), itemKey);
+        /* If the key is biger than this nodes' item key, go delete it from the right subtree */
         else if (comparison > 0) _tree_remove(&((*treeNodePtr)->right), itemKey);
+        /* If the key is equal than this nodes' item key, go delete it this node! */
         else {
             if ((*treeNodePtr)->left != NULL && (*treeNodePtr)->right != NULL) {
+                /* If it is an "internal" node, find the max child of the left subtree */
                 TreeNode *max = _tree_max(&(*treeNodePtr)->left);
+                /* Change items with the node */
                 (*treeNodePtr)->item = max->item;
+                /* Delete the max child in the left subtree, which is either a leaf,
+                 * or a node with only one subtree */
                 _tree_remove(&((*treeNodePtr)->left), tree_item_key(max->item));
             } else {
                 TreeNode *aux = *treeNodePtr;
                 if ((*treeNodePtr)->left == NULL && (*treeNodePtr)->right == NULL) {
+                    /* If its a leaf, just make it NULL so our parent points to NULL */
                     *treeNodePtr = NULL;
                 } else {
                     if ((*treeNodePtr)->left == NULL) {
+                        /* If it doesn't have a left subtree, make it point to the right subtree */
                         *treeNodePtr = (*treeNodePtr)->right;
                     } else {
+                        /* If it doesn't have a righ subtree, make it point to the left subtree */
                         *treeNodePtr = (*treeNodePtr)->left;
                     }
                 }
+                /* Destroy the node! We dont want any memory leaks! */
                 treenode_destroy(aux);
             }
         }
+        /* Balance it! */
         _tree_balance(treeNodePtr);
     }
 }
 
 
 TreeNode *_tree_max(TreeNode **treeNodePtr) {
+    /* Dive into the right tree like crazy until there is no more! */
     if (*treeNodePtr != NULL && (*treeNodePtr)->right != NULL) {
         return _tree_max(&((*treeNodePtr)->right));
     }

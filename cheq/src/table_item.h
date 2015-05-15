@@ -10,8 +10,15 @@
 #include "includes.h"
 #include "cheque.h"
 
+/*
+* Our TableItem is going to be a Cheque.
+*/
 typedef Cheque TableItem;
-typedef unsigned long TableItemKey;
+
+/*
+* Our TableItemKey is going to be a ChequeKey, defined in cheque.h.
+*/
+typedef ChequeKey TableItemKey;
 
 /*
 * Returns the TableItemKey matching a given TableItem.

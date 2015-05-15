@@ -79,39 +79,4 @@ int client_update_receiving(Client *client, long amount);
 * @param client Pointer to the client that we want to obtain the key.
 * @return       The key of the client.
 */
-unsigned long client_key(Client *client);
-
-/*
-* Gives the reference of a given client.
-* @param client Pointer to the client that we want to obtain the reference.
-* @return       The reference of the client.
-*/
-unsigned long client_reference(Client *client);
-
-/*
-* Gives the amount issued pending of a given client.
-* @param client Pointer to the client that we want to obtain the amount issued pending.
-* @return       The amount issued pending of the client.
-*/
-unsigned long client_amountIssuedPending(Client *client);
-
-/*
-* Gives the amount receiving pending of a given client.
-* @param client Pointer to the client that we want to obtain the amount receiving pending.
-* @return       The amount receiving pending of the client.
-*/
-unsigned long client_amountReceivingPending(Client *client);
-
-/*
-* Gives the number of issued pending cheques of a given client.
-* @param client Pointer to the client that we want to obtain the number of issued pending.
-* @return       The number of issued pending cheques of the client.
-*/
-unsigned int client_chequesIssuedPending(Client *client);
-
-/*
-* Gives the number of receiving cheques of a given client.
-* @param client Pointer to the client that we want to obtain the number of receiving cheques.
-* @return       The number of receiving cheques of the client.
-*/
-unsigned int client_chequesReceivingPending(Client *client);
+ClientKey client_key(Client *client);

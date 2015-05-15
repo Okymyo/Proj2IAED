@@ -16,10 +16,6 @@ Cheque cheque_init(unsigned long reference, unsigned long amount, unsigned long 
     return new;
 }
 
-unsigned long cheque_reference(Cheque *cheque) {
-    return cheque->reference;
-}
-
 unsigned long cheque_amount(Cheque *cheque) {
     return cheque->amount;
 }
@@ -46,5 +42,9 @@ Cheque cheque_nil() {
 }
 
 int cheque_equal(Cheque *cheque1, Cheque *cheque2) {
-    return cheque1->reference == cheque2->reference;
+    return cheque_key(cheque1) == cheque_key(cheque2);
+}
+
+ChequeKey cheque_key(Cheque *cheque) {
+    return cheque->reference;
 }

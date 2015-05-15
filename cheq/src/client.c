@@ -49,26 +49,6 @@ int client_update_receiving(Client *client, long amount) {
     return client->chequesIssuedPending == 0 && client->chequesReceivingPending == 0;
 }
 
-unsigned long client_key(Client *client) {
+ClientKey client_key(Client *client) {
     return client->reference;
-}
-
-unsigned long client_reference(Client *client) {
-    return client->reference;
-}
-
-unsigned long client_amountIssuedPending(Client *client) {
-    return client->amountIssuedPending;
-}
-
-unsigned long client_amountReceivingPending(Client *client) {
-    return client->amountReceivingPending;
-}
-
-unsigned int client_chequesIssuedPending(Client *client) {
-    return client->chequesIssuedPending;
-}
-
-unsigned int client_chequesReceivingPending(Client *client) {
-    return client->chequesReceivingPending;
 }

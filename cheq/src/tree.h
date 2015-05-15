@@ -92,13 +92,6 @@ void tree_remove(Tree *tree, TreeItemKey itemKey);
 unsigned int tree_count(Tree *tree);
 
 /*
-* Checks the height of a given tree.
-* @param tree Pointer of the tree to check the height.
-* @return     Height of the tree, keep in mind that leafs count as zero.
-*/
-int tree_height(Tree *tree);
-
-/*
 * Searches a tree item in a given tree that has a given key.
 * @param tree    Pointer of the tree where we are going to search the item.
 * @param itemKey Key of the item that we want to search.

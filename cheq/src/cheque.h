@@ -25,6 +25,11 @@ typedef struct {
 } Cheque;
 
 /*
+* Our ChequeKey is going to be a long, the reference of the cheque.
+*/
+typedef unsigned long ChequeKey;
+
+/*
 * Returns a cheque initialized with the given values
 * @param reference Reference of the cheque
 * @param amount    Value of the cheque
@@ -33,13 +38,6 @@ typedef struct {
 * @return          Cheque initialized with previous values.
 */
 Cheque cheque_init(unsigned long reference, unsigned long amount, unsigned long sender, unsigned long receiver);
-
-/*
-* Returns the reference of a given cheque.
-* @param cheque Pointer to the cheque from which we're extracting the reference.
-* @return       Reference that we are returning.
-*/
-unsigned long cheque_reference(Cheque *cheque);
 
 /*
 * Returns the amount of a given cheque.
@@ -81,3 +79,10 @@ Cheque cheque_nil();
 * @return        True if the cheques are the same, False otherwise.
 */
 int cheque_equal(Cheque *cheque1, Cheque *cheque2);
+
+/*
+* Gives the key of a given cheque.
+* @param cheque Pointer to the cheque that we want to obtain the key.
+* @return       The key of the cheque.
+*/
+ChequeKey cheque_key(Cheque *cheque);

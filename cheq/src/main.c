@@ -15,6 +15,8 @@ void parseArguments(int *argc, char argv[ARGUMENTS_NUMBER][ARGUMENT_SIZE]) {
     char insideWord = 0;
     int wordPosition = 0;
 
+    /* We don't like scanf since it can cause a buffer overflow, using fgets prevents it.
+     * We use fgets and after it we parse the line in separated arguments. */
     fgets(line, LINESIZE, stdin);
     for (charRead = line[linePosition = 0]; charRead != '\n' && charRead != EOF && charRead != '\0' &&
                                             *argc < ARGUMENTS_NUMBER; charRead = line[++linePosition]) {
@@ -38,6 +40,9 @@ void parseArguments(int *argc, char argv[ARGUMENTS_NUMBER][ARGUMENT_SIZE]) {
 int requestInput(Database *database) {
     int argc = 0;
     char argv[ARGUMENTS_NUMBER][ARGUMENT_SIZE];
+
+    /* Request input from user and parse the arguments value
+     * into argv and arguments count into argc */
     parseArguments(&argc, argv);
 
     if (strcmp(argv[0], "cheque") == 0) {

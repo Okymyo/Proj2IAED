@@ -10,7 +10,7 @@
 #define MAGICCONSTANT 0x45d9f3b
 
 TableItemKey table_item_key(TableItem item) {
-    return cheque_reference(&item);
+    return cheque_key(&item);
 }
 
 unsigned int table_item_hash(TableItemKey itemKey) {
