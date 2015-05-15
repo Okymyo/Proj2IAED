@@ -1,4 +1,5 @@
 #pragma once
+
 #include "includes.h"
 
 /*
@@ -32,7 +33,8 @@ typedef unsigned long ClientKey;
 * @param chequesReceivingPending Number of cheques to be received that are pending of the new client.
 * @return                        The newly created client.
 */
-Client client_init(unsigned long reference, unsigned long amountIssuedPending, unsigned long amountReceivingPending, unsigned int chequesIssuedPending, unsigned int chequesReceivingPending);
+Client client_init(unsigned long reference, unsigned long amountIssuedPending, unsigned long amountReceivingPending,
+                   unsigned int chequesIssuedPending, unsigned int chequesReceivingPending);
 
 /*
 * Compares two client keys.
@@ -47,7 +49,7 @@ int client_compare(ClientKey clientKey1, ClientKey clientKey2);
 * @param client Pointer to the client that we want to print.
 * @param prefix Prefix that we want to append before the client info is printed.
 */
-void client_print(Client *client, char * prefix);
+void client_print(Client *client, char *prefix);
 
 /*
  * Updates the issued amount of a given client.

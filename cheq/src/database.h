@@ -1,11 +1,12 @@
 #pragma once
+
 #include "includes.h"
 #include "tree.h"
 #include "table.h"
 
 typedef struct {
-	Tree *tree;
-	Table *table;
+    Tree *tree;
+    Table *table;
 } Database;
 
 /*
@@ -27,7 +28,8 @@ void database_destroy(Database *database);
 * @param  EMPTY
 * @param  EMPTY
 */
-void database_cheque(Database *database, unsigned long value, unsigned long sender, unsigned long receiver, unsigned long reference);
+void database_cheque(Database *database, unsigned long value, unsigned long sender, unsigned long receiver,
+                     unsigned long reference);
 
 /*
 * EMPTY
