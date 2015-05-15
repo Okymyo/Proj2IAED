@@ -7,7 +7,7 @@
 
 #include "table.h"
 
-#define EXPANDTHRESHOLD 0.9    /* If table gets over 90% full, expand it */
+#define EXPANDTHRESHOLD 0.8    /* If table gets over 80% full, expand it */
 #define SHRINKTHRESHOLD 0.2    /* If table is less than 20% full, shrink it */
 #define EXPAND 2               /* If we're expanding, we duplicate the size. MUST remain power of two! */
 #define SHRINK 0.5             /* If we're shrinking, halve the size. MUST remain power of two! */
@@ -122,7 +122,7 @@ TableItem table_remove(Table *table, TableItemKey itemKey) {
         return table_item_nil();
 
     /* If the record we just deleted was the first in queue, update what the first in queue is
-    Also update the new first in queue so that its "prev" is the last element. */
+    Also update the new first in queue so that its "prev" is the last element */
     if (table->first == index) {
         table->first = table->data[index].next;
         table->data[table->data[index].next].prev = table->data[index].prev;
@@ -134,7 +134,7 @@ TableItem table_remove(Table *table, TableItemKey itemKey) {
         table->data[table->first].prev = table->data[index].prev;
     }
     /* If the record we deleted wasn't the first one, and not the last one, update the previous
-    and next records so that they point to eachother with "next" and "prev" respectively. */
+    and next records so that they point to eachother with "next" and "prev" respectively */
     else {
         table->data[table->data[index].prev].next = table->data[index].next;
         table->data[table->data[index].next].prev = table->data[index].prev;
