@@ -29,37 +29,35 @@ Cheque cheque_init(unsigned long reference, unsigned long amount, unsigned long 
 
 /*
 * Returns the reference of a given cheque.
-* @param cheque Cheque from which we're extracting the reference.
+* @param cheque Pointer to the cheque from which we're extracting the reference.
 * @return       Reference that we are returning.
 */
 unsigned long cheque_reference(Cheque *cheque);
 
 /*
 * Returns the amount of a given cheque.
-* @param cheque Cheque from which we're extracting the amount.
+* @param cheque Pointer to the cheque from which we're extracting the amount.
 * @return       Amount that we are returning.
 */
 unsigned long cheque_amount(Cheque *cheque);
 
 /*
 * Returns the sender of a given cheque.
-* @param cheque Cheque from which we're extracting the sender.
+* @param cheque Pointer to the cheque from which we're extracting the sender.
 * @return       Sender that we are returning.
 */
 unsigned long cheque_sender(Cheque *cheque);
 
 /*
 * Returns the receiver of a given cheque.
-* @param cheque Cheque from which we're extracting the receiver.
+* @param cheque Pointer to the cheque from which we're extracting the receiver.
 * @return       Receiver that we are returning.
 */
 unsigned long cheque_receiver(Cheque *cheque);
 
 /*
-* EMPTY
-* @param EMPTY
-* @param EMPTY
-* @return EMPTY
+* Prints a given cheque
+* @param cheque Pointer to the cheque we are printing.
 */
 void cheque_print(Cheque *cheque);
 
@@ -71,8 +69,8 @@ Cheque cheque_nil();
 
 /*
 * Checks whether two given cheques are the one and the same.
-* @param Cheque we are comparing.
-* @param Cheque we are comparing it to.
-* @return True if the cheques are the same, False otherwise.
+* @param cheque1 Cheque we are comparing.
+* @param cheque2 Cheque we are comparing it to.
+* @return        True if the cheques are the same, False otherwise.
 */
 int cheque_equal(Cheque *cheque1, Cheque *cheque2);
