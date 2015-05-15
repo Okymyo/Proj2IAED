@@ -66,9 +66,6 @@ int requestInput(Database *database) {
 		database_quit(database);
         return QUIT;
     }
-	else if(strcmp(argv[0], "print") == 0){
-		table_print(database->table);
-    }
     return CONTINUE;
 }
 

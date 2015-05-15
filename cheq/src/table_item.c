@@ -25,5 +25,5 @@ void table_item_destroy(TableItem *itemPtr){
 }
 
 TableItemKey table_item_key(TableItem item){
-	return cheque_reference(item);
+	return cheque_reference(&item);
 }
