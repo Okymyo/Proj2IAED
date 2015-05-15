@@ -58,7 +58,7 @@ Table *table_init();
 TableItem *table_grave();
 
 /*
-* Inserts a given TableItem into the table.
+* Creates a copy of a given TableItem and inserts it into the table.
 * @param table Table into which the item is being inserted.
 * @param item  TableItem to insert into the table.
 */

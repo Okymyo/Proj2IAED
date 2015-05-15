@@ -8,6 +8,7 @@ Database *database_init() {
 }
 
 void database_destroy(Database *database) {
+	/* Free our tree, our table, and then the database itself */
     tree_destroy(database->tree);
     table_destroy(database->table);
     free(database);
@@ -20,11 +21,13 @@ void database_cheque(Database *database, unsigned long amount, unsigned long sen
     /* Add the cheque to our table */
     table_insert(database->table, cheque_init(reference, amount, sender, receiver));
 
+	/* Check whether the sender exists. If it doesn't, create it. If it does, change the values */
     if ((client = tree_search(database->tree, sender)) != NULL)
         client_update_issued(client, amount);
     else
         tree_insert(database->tree, client_init(sender, amount, 0, 1, 0));
 
+	/* Do the same as above, but for the receiver */
     if ((client = tree_search(database->tree, receiver)) != NULL)
         client_update_receiving(client, amount);
     else
@@ -34,10 +37,14 @@ void database_cheque(Database *database, unsigned long amount, unsigned long sen
 void database_process(Database *database) {
     Cheque cheque, nil = cheque_nil();
     cheque = table_unqueue(database->table);
+	
+	/* If table_unqueue returns a nil cheque, it is empty */
     if (cheque_equal(&cheque, &nil)) {
         printf("Nothing to process\n");
         return;
     }
+	
+	/* Update the values in our clients (sender and receiver), and if any of them report being empty, remove them */
     if (client_update_issued(tree_search(database->tree, cheque_sender(&cheque)), -cheque_amount(&cheque)))
         tree_remove(database->tree, cheque_sender(&cheque));
     if (client_update_receiving(tree_search(database->tree, cheque_receiver(&cheque)), -cheque_amount(&cheque)))
@@ -47,10 +54,14 @@ void database_process(Database *database) {
 void database_processr(Database *database, unsigned long reference) {
     Cheque cheque, nil = cheque_nil();
     cheque = table_remove(database->table, reference);
+	
+	/* If table_remove returns a nil cheque, the reference we have given doesn't have a matching cheque */
     if (cheque_equal(&cheque, &nil)) {
         printf("Cheque %lu does not exist\n", reference);
         return;
     }
+	
+	/* Update the values in our clients (sender and receiver), and delete them should they be empty */
     if (client_update_issued(tree_search(database->tree, cheque_sender(&cheque)), -cheque_amount(&cheque)))
         tree_remove(database->tree, cheque_sender(&cheque));
     if (client_update_receiving(tree_search(database->tree, cheque_receiver(&cheque)), -cheque_amount(&cheque)))
@@ -70,6 +81,8 @@ void database_info(Database *database) {
         printf("No active clients\n");
         return;
     }
+	
+	/* Print our entire tree */
     tree_print(database->tree);
 }
 
