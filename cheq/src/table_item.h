@@ -1,7 +1,7 @@
 /* =====================
  * Grupo 5, IAED, LEIC-T
  * 81900 - Nuno Anselmo
- * 81943 - Goncalo Matos
+ * 81943 - Gonçalo Matos
  * 82047 - Andre Mendes
    ===================== */
 
@@ -41,7 +41,7 @@ unsigned int table_item_hash(TableItemKey itemKey);
 TableItem table_item_nil();
 
 /*
-* Deallocate a given TableItem
-* @param TableItem to be deallocated
+* Deallocate a given TableItem.
+* @param TableItem to be deallocated.
 */
 void table_item_destroy(TableItem *item);
