@@ -17,10 +17,8 @@ typedef struct {
 Database *database_init();
 
 /*
-* EMPTY
-* @param  EMPTY
-* @param  EMPTY
-* @return EMPTY
+* Deallocates all of the resources in use by a given database.
+* @param Database that we are deallocating.
 */
 void database_destroy(Database *database);
 
@@ -28,23 +26,6 @@ void database_destroy(Database *database);
 * EMPTY
 * @param  EMPTY
 * @param  EMPTY
-* @return EMPTY
-*/
-Tree *database_tree(Database *database);
-
-/*
-* EMPTY
-* @param  EMPTY
-* @param  EMPTY
-* @return EMPTY
-*/
-Table *database_table(Database *database);
-
-/*
-* EMPTY
-* @param  EMPTY
-* @param  EMPTY
-* @return EMPTY
 */
 void database_cheque(Database *database, unsigned long value, unsigned long sender, unsigned long receiver, unsigned long reference);
 
@@ -52,7 +33,6 @@ void database_cheque(Database *database, unsigned long value, unsigned long send
 * EMPTY
 * @param  EMPTY
 * @param  EMPTY
-* @return EMPTY
 */
 void database_process(Database *database);
 
@@ -60,7 +40,6 @@ void database_process(Database *database);
 * EMPTY
 * @param  EMPTY
 * @param  EMPTY
-* @return EMPTY
 */
 void database_processr(Database *database, unsigned long reference);
 
@@ -68,7 +47,6 @@ void database_processr(Database *database, unsigned long reference);
 * EMPTY
 * @param  EMPTY
 * @param  EMPTY
-* @return EMPTY
 */
 void database_infocheque(Database *database, unsigned long reference);
 
@@ -76,7 +54,6 @@ void database_infocheque(Database *database, unsigned long reference);
 * EMPTY
 * @param  EMPTY
 * @param  EMPTY
-* @return EMPTY
 */
 void database_infoclient(Database *database, unsigned long reference);
 
@@ -84,7 +61,6 @@ void database_infoclient(Database *database, unsigned long reference);
 * EMPTY
 * @param  EMPTY
 * @param  EMPTY
-* @return EMPTY
 */
 void database_info(Database *database);
 
@@ -92,6 +68,5 @@ void database_info(Database *database);
 * EMPTY
 * @param  EMPTY
 * @param  EMPTY
-* @return EMPTY
 */
 void database_quit(Database *database);

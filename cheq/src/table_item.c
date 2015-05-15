@@ -1,5 +1,4 @@
 #include "table_item.h"
-#include "cheque.h"
 
 #define MAGICCONSTANT 0x45d9f3b
 
@@ -26,5 +25,5 @@ void table_item_destroy(TableItem *itemPtr){
 }
 
 TableItemKey table_item_key(TableItem item){
-	return item.reference;
+	return cheque_reference(item);
 }

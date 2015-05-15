@@ -17,65 +17,67 @@ typedef struct {
 } Cheque;
 
 /*
-* EMPTY
-* @param  EMPTY
-* @param  EMPTY
-* @return EMPTY
+* Returns a cheque initialized with the given values
+* @param reference Reference of the cheque
+* @param amount    Value of the cheque
+* @param sender    Reference of the cheque's sender
+* @param receiver  Reference of the cheque's receiver
+* @return          Cheque initialized with previous values.
 */
 Cheque cheque_init(unsigned long reference, unsigned long amount, unsigned long sender, unsigned long receiver);
 
 /*
 * EMPTY
-* @param  EMPTY
-* @param  EMPTY
+* @param EMPTY
+* @param EMPTY
 * @return EMPTY
 */
 unsigned long cheque_reference(Cheque *cheque);
 
 /*
 * EMPTY
-* @param  EMPTY
-* @param  EMPTY
+* @param EMPTY
+* @param EMPTY
 * @return EMPTY
 */
 unsigned long cheque_amount(Cheque *cheque);
 
 /*
 * EMPTY
-* @param  EMPTY
-* @param  EMPTY
+* @param EMPTY
+* @param EMPTY
 * @return EMPTY
 */
 unsigned long cheque_sender(Cheque *cheque);
 
 /*
 * EMPTY
-* @param  EMPTY
-* @param  EMPTY
+* @param EMPTY
+* @param EMPTY
 * @return EMPTY
 */
 unsigned long cheque_receiver(Cheque *cheque);
 
 /*
 * EMPTY
-* @param  EMPTY
-* @param  EMPTY
+* @param EMPTY
+* @param EMPTY
 * @return EMPTY
 */
 void cheque_print(Cheque *cheque);
 
 /*
 * EMPTY
-* @param  EMPTY
-* @param  EMPTY
+* @param EMPTY
+* @param EMPTY
 * @return EMPTY
 */
 Cheque cheque_nil();
 
 /*
 * EMPTY
-* @param  EMPTY
-* @param  EMPTY
+* @param EMPTY
+* @param EMPTY
 * @return EMPTY
 */
 int cheque_equal(Cheque *cheque1, Cheque *cheque2);
