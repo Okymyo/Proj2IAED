@@ -1,3 +1,10 @@
+/* =====================
+ * Grupo 5, IAED, LEIC-T
+ * 81900 - Nuno Anselmo
+ * 81943 - Gonçalo Matos
+ * 82047 - André Mendes
+   ===================== */
+
 #include "table.h"
 
 #define EXPANDTHRESHOLD 0.9    /* If table gets over 90% full, expand it */

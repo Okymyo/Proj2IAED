@@ -1,3 +1,10 @@
+/* =====================
+ * Grupo 5, IAED, LEIC-T
+ * 81900 - Nuno Anselmo
+ * 81943 - Gonçalo Matos
+ * 82047 - André Mendes
+   ===================== */
+
 #include "main.h"
 
 void parseArguments(int *argc, char argv[ARGUMENTS_NUMBER][ARGUMENT_SIZE]) {
