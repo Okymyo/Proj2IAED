@@ -35,7 +35,6 @@ void parseArguments(int *argc, char argv[ARGUMENTS_NUMBER][ARGUMENT_SIZE]) {
     argv[*argc][wordPosition] = '\0';
 }
 
-/* We have to give tree and table here */
 int requestInput(Database *database) {
     int argc = 0;
     char argv[ARGUMENTS_NUMBER][ARGUMENT_SIZE];
