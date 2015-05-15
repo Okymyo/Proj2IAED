@@ -71,8 +71,15 @@ int requestInput(Database *database) {
 }
 
 int main(int argc, const char *argv[]) {
+	/* Create our database */
     Database *database = database_init();
+	
+	/* Continuously ask for input */
     while (requestInput(database) != QUIT);
+	
+	/* Deallocate our database */
     database_destroy(database);
+	
+	/* Program completed successfully! Return 0! */
     return 0;
 }
