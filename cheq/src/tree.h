@@ -59,7 +59,7 @@ void treenode_destroy(TreeNode *treeNode);
 
 /*
 * Creates a new tree.
-* @return Returns a pointer to a structure of the type Tree.
+* @return A pointer to a structure of the type Tree.
 */
 Tree *tree_init();
 
