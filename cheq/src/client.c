@@ -17,7 +17,7 @@ int client_compare(ClientKey clientKey1, ClientKey clientKey2) {
     return 0;
 }
 
-void client_print(Client *client, char * prefix) {
+void client_print(Client *client, char *prefix) {
     printf("%s", prefix);
     printf("%lu %d %lu %d %lu\n", client->reference, client->chequesIssuedPending,
            client->amountIssuedPending, client->chequesReceivingPending, client->amountReceivingPending

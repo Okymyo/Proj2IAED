@@ -1,4 +1,5 @@
 #pragma once
+
 #include "includes.h"
 
 /*
@@ -11,9 +12,9 @@
 */
 typedef struct {
     unsigned long reference;
-	unsigned long amount;
+    unsigned long amount;
     unsigned long sender;
-	unsigned long receiver;
+    unsigned long receiver;
 } Cheque;
 
 /*

@@ -1,4 +1,5 @@
 #pragma once
+
 #include "includes.h"
 #include "table_item.h"
 
@@ -24,21 +25,31 @@ typedef struct {
 */
 typedef struct {
     unsigned int first, count, size;
-	TableRow *data;
+    TableRow *data;
 } Table;
+
+/* ================================================================== */
+/* TableRow methods */
+/* ================================================================== */
+
+/*
+* Returns a TableRow that has been initialized with specific values.
+* @param itemPtr  Pointer to the TableItem this row will store.
+* @param next     Number of the next row in queue.
+* @param previous Number of the previous row in queue.
+* @return         TableRow that contains the values that were given.
+*/
+TableRow table_row_init(TableItem *itemPtr, unsigned int next, unsigned int previous);
+
+/* ================================================================== */
+/* Table methods */
+/* ================================================================== */
 
 /*
 * Creates a new table.
 * @return Returns a pointer to a structure of type Table.
 */
 Table *table_init();
-
-/*
-* Checks whether a given TableItem pointer is to be assumed as nil.
-* @param itemPtr Pointer to the item to check.
-* @return        Returns true if nil or grave, false otherwise.
-*/
-int table_item_ptr_nil(TableItem *itemPtr);
 
 /*
 * Returns the value to be used as a grave.
@@ -61,20 +72,19 @@ void table_insert(Table *table, TableItem item);
 void table_insert_pointer(Table *table, TableItem *itemPtr);
 
 /*
-* Resizes our table, modifying its maximum size.
-* @param table  Table that will be redimensioned.
-* @param resize Factor by which we multiply our table size.
+* Removes the oldest element in the table.
+* @param table Table from which we're removing the item.
+* @return      TableItem that was removed.
 */
-void table_resize(Table *table, float resize);
+TableItem table_unqueue(Table *table);
 
 /*
-* Returns a TableRow that has been initialized with specific values.
-* @param itemPtr  Pointer to the TableItem this row will store.
-* @param next     Number of the next row in queue.
-* @param previous Number of the previous row in queue.
-* @return         TableRow that contains the values that were given.
+* Removes the TableItem with the given TableItemKey
+* @param table   Table from which we're removing the item.
+* @param itemKey TableItemKey of the item we're removing.
+* @return        TableItem that was removed, table_item_nil() if non-existent.
 */
-TableRow table_row_init(TableItem *itemPtr, unsigned int next, unsigned int previous);
+TableItem table_remove(Table *table, TableItemKey itemKey);
 
 /*
 * Returns the number of elements in a given table.
@@ -100,22 +110,21 @@ TableItem *table_search(Table *table, TableItemKey itemKey);
 unsigned int table_search_row(Table *table, TableItemKey itemKey);
 
 /*
+* Resizes our table, modifying its maximum size.
+* @param table  Table that will be redimensioned.
+* @param resize Factor by which we multiply our table size.
+*/
+void table_resize(Table *table, float resize);
+
+/*
+* Checks whether a given TableItem pointer is to be assumed as nil.
+* @param itemPtr Pointer to the item to check.
+* @return        Returns true if nil or grave, false otherwise.
+*/
+int table_item_ptr_nil(TableItem *itemPtr);
+
+/*
 * Deallocates all the resources in use by a certain Table.
 * @param table Table which we are deallocating.
 */
 void table_destroy(Table *table);
-
-/*
-* Removes the oldest element in the table.
-* @param table Table from which we're removing the item.
-* @return      TableItem that was removed.
-*/
-TableItem table_unqueue(Table *table);
-
-/*
-* Removes the TableItem with the given TableItemKey
-* @param table   Table from which we're removing the item.
-* @param itemKey TableItemKey of the item we're removing.
-* @return        TableItem that was removed, table_item_nil() if non-existent.
-*/
-TableItem table_remove(Table *table, TableItemKey itemKey);

@@ -131,8 +131,8 @@ int _tree_height(TreeNode **treeNodePtr) {
     return -1;
 }
 
-void _tree_recalculate_height(TreeNode **treeNodePtr){
-    (*treeNodePtr)->height = max(_tree_height(&((*treeNodePtr)->left)), _tree_height(&((*treeNodePtr)->right)))+1;
+void _tree_recalculate_height(TreeNode **treeNodePtr) {
+    (*treeNodePtr)->height = max(_tree_height(&((*treeNodePtr)->left)), _tree_height(&((*treeNodePtr)->right))) + 1;
 }
 
 int _tree_balance_factor(TreeNode **treeNodePtr) {
@@ -194,7 +194,7 @@ void _tree_balance(TreeNode **treeNodePtr) {
         } else {
             _tree_rotate_right_left(treeNodePtr);
         }
-    }else{
+    } else {
         _tree_recalculate_height(treeNodePtr);
     }
 }
