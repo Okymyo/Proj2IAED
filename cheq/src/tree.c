@@ -8,7 +8,7 @@
 #include "tree.h"
 
 #ifndef max
-#define max(a, b) a > b? a :b
+#define max(a, b) a > b? a : b
 #endif
 
 /* ================================================================== */
@@ -66,6 +66,7 @@ void tree_destroy(Tree *tree) {
     _tree_destroy(&tree->root);
     free(tree);
 }
+
 /* ================================================================== */
 /* Tree recursive methods */
 /* ================================================================== */
