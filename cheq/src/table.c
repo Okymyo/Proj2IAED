@@ -6,6 +6,7 @@
 #define SHRINK 0.5			/* If we're shrinking, halve the size. MUST remain power of two! */
 							/* We require power of two for our incrementation function to go through
 							   every record in the table. */
+#define increment(i) (i*i + i)/2
 
 TableRow table_row_init(TableItem *itemPtr, unsigned int next, unsigned int previous){
 	TableRow row;
@@ -51,7 +52,7 @@ void table_insert_pointer(Table *table, TableItem *itemPtr){
 	Once it finds a NULL or a grave, it stores it there */
 	while (!table_item_ptr_nil(table->data[index].itemPtr)){
 		collision++;
-		index = (temp + (collision*collision + collision)/2) % table->size;
+		index = (temp + increment(collision)) % table->size;
 	}
 	
 	/* Initialize a row with TableItem item, and with the previously last element */
@@ -191,7 +192,7 @@ unsigned int table_search_row(Table *table, TableItemKey itemKey){
 	/* We know we have free space, and our incrementing function (i^2 + i) always succeeds */
 	while (collision < table->size && (table->data[index].itemPtr == table_grave() || (table->data[index].itemPtr != NULL && table_item_key(*table->data[index].itemPtr) != itemKey))){
 		collision++;
-		index = (temp + (collision*collision + collision)/2) % table->size;
+		index = (temp + increment(collision)) % table->size;
 	}
 	
 	/* If we stopped searching because we went through every possible position or because
