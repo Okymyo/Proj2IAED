@@ -1,14 +1,14 @@
 /* =====================
  * Grupo 5, IAED, LEIC-T
  * 81900 - Nuno Anselmo
- * 81943 - Goncalo Matos
- * 82047 - Andre Mendes
+ * 81943 - Gonçalo Matos
+ * 82047 - André Mendes
    ===================== */
 
 #include "tree.h"
 
 #ifndef max
-#define max(a, b) a > b? a :b
+#define max(a, b) a > b? a : b
 #endif
 
 /* ================================================================== */
@@ -66,6 +66,7 @@ void tree_destroy(Tree *tree) {
     _tree_destroy(&tree->root);
     free(tree);
 }
+
 /* ================================================================== */
 /* Tree recursive methods */
 /* ================================================================== */
